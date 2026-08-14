@@ -3,14 +3,150 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Feetsalud</title>
+
+  <title>Feetsalud | Atención Podológica</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #263238;
+    }
+
+    .encabezado {
+      background: linear-gradient(135deg, #315caa, #8b4ca8);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      border-radius: 0 0 30px 30px;
+    }
+
+    .logo {
+      font-size: 34px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .subtitulo {
+      margin-top: 8px;
+      opacity: 0.95;
+    }
+
+    .contenedor {
+      max-width: 650px;
+      margin: 25px auto;
+      padding: 0 18px;
+    }
+
+    .bienvenida {
+      background: white;
+      padding: 22px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .bienvenida h2 {
+      margin-top: 0;
+    }
+
+    .botones {
+      display: grid;
+      gap: 15px;
+    }
+
+    button {
+      border: none;
+      border-radius: 16px;
+      padding: 20px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      background: white;
+      color: #263238;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      text-align: left;
+    }
+
+    button:hover {
+      transform: scale(1.01);
+    }
+
+    .principal {
+      background: #315caa;
+      color: white;
+    }
+
+    .icono {
+      font-size: 28px;
+      margin-right: 12px;
+    }
+
+    .pie {
+      text-align: center;
+      color: #777;
+      font-size: 13px;
+      margin: 35px 0;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>FEETSALUD</h1>
-  <p>Sistema de atención y registro de pacientes</p>
 
-  <button>Nuevo paciente</button>
-  <button>Buscar paciente</button>
+  <header class="encabezado">
+    <div class="logo">🦶 FEETSALUD</div>
+    <div class="subtitulo">Sistema de atención podológica</div>
+  </header>
+
+  <main class="contenedor">
+
+    <section class="bienvenida">
+      <h2>Bienvenida</h2>
+      <p>
+        Gestiona pacientes, atenciones, consentimientos,
+        fotografías e historial podológico desde un solo lugar.
+      </p>
+    </section>
+
+    <section class="botones">
+
+      <button class="principal">
+        <span class="icono">👤</span>
+        Nuevo paciente
+      </button>
+
+      <button>
+        <span class="icono">🔎</span>
+        Buscar paciente
+      </button>
+
+      <button>
+        <span class="icono">📋</span>
+        Pacientes registrados
+      </button>
+
+      <button>
+        <span class="icono">📅</span>
+        Agenda de citas
+      </button>
+
+      <button>
+        <span class="icono">📄</span>
+        Consentimientos informados
+      </button>
+
+    </section>
+
+    <div class="pie">
+      Feetsalud · Atención podológica
+    </div>
+
+  </main>
+
 </body>
 </html>
