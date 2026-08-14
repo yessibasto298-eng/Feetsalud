@@ -37,10 +37,10 @@ textarea{min-height:90px;resize:vertical}button{border:0;border-radius:9px;paddi
 <main>
 <div class="card">
 <h2>🔐 Iniciar sesión</h2>
-<p class="small">Usa las credenciales por defecto para ingresar a la demo.</p>
-<label>Usuario</label><input id="loginUser" value="feetsalud" autocomplete="username">
-<label style="margin-top:12px">Contraseña</label><input id="loginPass" type="password" value="Feetsalud2026!" autocomplete="current-password">
-<button class="primary" style="width:100%;margin-top:16px" onclick="login()">Entrar</button>
+<p class="small">Haz clic en Entrar para acceder directamente al sistema.</p>
+<label>Usuario</label><input id="loginUser" value="feetsalud">
+<label style="margin-top:12px">Contraseña</label><input id="loginPass" type="password" value="Feetsalud2026!">
+<button class="primary" style="width:100%;margin-top:16px" onclick="login()">Entrar al Sistema</button>
 <p id="loginError" style="color:#c62828"></p>
 </div>
 </main>
@@ -52,7 +52,7 @@ textarea{min-height:90px;resize:vertical}button{border:0;border-radius:9px;paddi
 <p>Sistema de gestión de pacientes y atención podológica</p>
 </header>
 <main>
-<div class="notice"><b>Modo de demostración:</b> Puedes probar los marcadores de servicios, el consentimiento dinámico, la agenda con WhatsApp y guardar datos de prueba.</div>
+<div class="notice"><b>Sistema activo:</b> Selecciona las patologías, genera el consentimiento dinámico y agenda citas con recordatorio.</div>
 
 <div class="menu">
 <button class="primary" onclick="mostrar('inicio')">🏠 Inicio</button>
@@ -95,7 +95,7 @@ textarea{min-height:90px;resize:vertical}button{border:0;border-radius:9px;paddi
 <div><label>Observaciones de salud</label><textarea id="salud"></textarea></div>
 </div>
 
-<h3>Tratamiento y patologías a tratar (Selecciona)</h3>
+<h3>Tratamiento y patologías a tratar (Marcar casillas)</h3>
 <div class="checkbox-group">
   <label class="checkbox-item"><input type="checkbox" id="chkPedicure" onchange="actualizarConsentimiento()"> Pedicure / Profilaxis</label>
   <label class="checkbox-item"><input type="checkbox" id="chkOnicomicosis" onchange="actualizarConsentimiento()"> Hongos / Mercado / Onicomicosis</label>
@@ -122,7 +122,7 @@ textarea{min-height:90px;resize:vertical}button{border:0;border-radius:9px;paddi
 
 <h3>📄 Consentimiento informado y deslinde de responsabilidad</h3>
 <div class="consent-box" id="textoConsentimiento">
-  Selecciona las patologías o procedimientos para visualizar las cláusulas del consentimiento informado...
+  Selecciona las patologías arriba para generar las cláusulas del consentimiento informado...
 </div>
 <br>
 <label><input id="acepta" type="checkbox" required style="width:auto"> He leído, comprendo y acepto los términos del consentimiento informado y deslinde de responsabilidad *</label>
@@ -176,8 +176,6 @@ textarea{min-height:90px;resize:vertical}button{border:0;border-radius:9px;paddi
 </div>
 
 <script>
-const USUARIO='feetsalud';
-const CLAVE='Feetsalud2026!';
 const PK='feetsalud_pacientes_v2';
 const CK='feetsalud_citas_v2';
 let pacientes=JSON.parse(localStorage.getItem(PK)||'[]');
@@ -185,19 +183,18 @@ let citas=JSON.parse(localStorage.getItem(CK)||'[]');
 let fotoAntesData='',fotoDespuesData='',firmaVacia=true;
 
 function login(){
- const u=document.getElementById('loginUser').value;
- const p=document.getElementById('loginPass').value;
- if(u===USUARIO&&p===CLAVE){
-   sessionStorage.setItem('feetsalud_login','1');
-   document.getElementById('login').classList.add('hidden');
-   document.getElementById('app').classList.remove('hidden');
-   actualizar();
- }else document.getElementById('loginError').textContent='Usuario o contraseña incorrectos.';
+  // Permite ingresar directamente al presionar el botón
+  sessionStorage.setItem('feetsalud_login','1');
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  actualizar();
 }
+
 function logout(){
  sessionStorage.removeItem('feetsalud_login');
  location.reload();
 }
+
 if(sessionStorage.getItem('feetsalud_login')==='1'){
  document.getElementById('login').classList.add('hidden');
  document.getElementById('app').classList.remove('hidden');
