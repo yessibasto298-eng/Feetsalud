@@ -1,152 +1,374 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Feetsalud | Atención Podológica</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      color: #263238;
-    }
-
-    .encabezado {
-      background: linear-gradient(135deg, #315caa, #8b4ca8);
-      color: white;
-      padding: 30px 20px;
-      text-align: center;
-      border-radius: 0 0 30px 30px;
-    }
-
-    .logo {
-      font-size: 34px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
-    .subtitulo {
-      margin-top: 8px;
-      opacity: 0.95;
-    }
-
-    .contenedor {
-      max-width: 650px;
-      margin: 25px auto;
-      padding: 0 18px;
-    }
-
-    .bienvenida {
-      background: white;
-      padding: 22px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
-
-    .bienvenida h2 {
-      margin-top: 0;
-    }
-
-    .botones {
-      display: grid;
-      gap: 15px;
-    }
-
-    button {
-      border: none;
-      border-radius: 16px;
-      padding: 20px;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-      background: white;
-      color: #263238;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-      text-align: left;
-    }
-
-    button:hover {
-      transform: scale(1.01);
-    }
-
-    .principal {
-      background: #315caa;
-      color: white;
-    }
-
-    .icono {
-      font-size: 28px;
-      margin-right: 12px;
-    }
-
-    .pie {
-      text-align: center;
-      color: #777;
-      font-size: 13px;
-      margin: 35px 0;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Feetsalud | Sistema Podológico</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#263238}
+header{background:linear-gradient(135deg,#315caa,#8b4ca8);color:#fff;padding:20px}
+header h1{margin:0;font-size:28px}header p{margin:5px 0 0}
+main{max-width:1100px;margin:auto;padding:18px}.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 3px 14px #0001}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+label{display:block;font-weight:bold;font-size:14px;margin-bottom:5px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #ccd5df;border-radius:9px;font-size:15px}
+textarea{min-height:90px;resize:vertical}button{border:0;border-radius:9px;padding:11px 15px;margin:4px;font-weight:bold;cursor:pointer}
+.primary{background:#315caa;color:#fff}.secondary{background:#e8edf5;color:#234}.danger{background:#c62828;color:#fff}.success{background:#2e7d32;color:#fff}
+.hidden{display:none}.menu{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.patient{border:1px solid #dce3eb;border-radius:12px;padding:14px;margin:10px 0}
+.badge{display:inline-block;background:#e9f2ff;color:#315caa;padding:4px 8px;border-radius:20px;font-size:12px}
+.notice{background:#fff3cd;border-left:5px solid #e0a800;padding:12px;border-radius:8px;margin-bottom:16px}
+#firma{width:100%;height:190px;border:2px dashed #9aaabd;border-radius:10px;touch-action:none;background:white}
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.photo{max-width:100%;border-radius:10px}
+@media(max-width:600px){.photo-grid{grid-template-columns:1fr}}
+.login{max-width:420px;margin:70px auto}.center{text-align:center}.small{font-size:12px;color:#667085}
+.whatsapp{background:#25d366;color:#fff}.status{display:inline-block;padding:4px 8px;border-radius:20px;font-size:12px;background:#fff3cd;color:#856404}
+.checkbox-group{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;background:#f8fafc;padding:12px;border-radius:10px;border:1px solid #e2e8f0}
+.checkbox-item{display:flex;align-items:center;gap:8px;font-weight:normal;cursor:pointer}
+.checkbox-item input{width:auto}
+.consent-box{background:#f1f5f9;border-left:4px solid #315caa;padding:14px;border-radius:8px;margin-top:10px;font-size:13px;line-height:1.5}
+</style>
 </head>
-
 <body>
 
-  <header class="encabezado">
-    <div class="logo">🦶 FEETSALUD</div>
-    <div class="subtitulo">Sistema de atención podológica</div>
-  </header>
+<div id="login">
+<header><div class="login center"><h1>🦶 FEETSALUD</h1><p>Sistema de gestión podológica</p></div></header>
+<main>
+<div class="card">
+<h2>🔐 Iniciar sesión</h2>
+<p class="small">Usa las credenciales por defecto para ingresar a la demo.</p>
+<label>Usuario</label><input id="loginUser" value="feetsalud" autocomplete="username">
+<label style="margin-top:12px">Contraseña</label><input id="loginPass" type="password" value="Feetsalud2026!" autocomplete="current-password">
+<button class="primary" style="width:100%;margin-top:16px" onclick="login()">Entrar</button>
+<p id="loginError" style="color:#c62828"></p>
+</div>
+</main>
+</div>
 
-  <main class="contenedor">
+<div id="app" class="hidden">
+<header>
+<h1>🦶 FEETSALUD</h1>
+<p>Sistema de gestión de pacientes y atención podológica</p>
+</header>
+<main>
+<div class="notice"><b>Modo de demostración:</b> Puedes probar los marcadores de servicios, el consentimiento dinámico, la agenda con WhatsApp y guardar datos de prueba.</div>
 
-    <section class="bienvenida">
-      <h2>Bienvenida</h2>
-      <p>
-        Gestiona pacientes, atenciones, consentimientos,
-        fotografías e historial podológico desde un solo lugar.
-      </p>
-    </section>
+<div class="menu">
+<button class="primary" onclick="mostrar('inicio')">🏠 Inicio</button>
+<button class="primary" onclick="nuevoPaciente()">➕ Nuevo paciente</button>
+<button class="secondary" onclick="mostrar('buscar');cargarPacientes()">🔎 Pacientes</button>
+<button class="secondary" onclick="mostrar('agenda');cargarCitas()">📅 Agenda</button>
+<button class="secondary" onclick="mostrar('respaldo')">💾 Respaldo y Descargas</button>
+<button class="danger" onclick="logout()">🔒 Salir</button>
+</div>
 
-    <section class="botones">
+<section id="inicio" class="card">
+<h2>Bienvenida</h2>
+<p>Gestiona pacientes, atenciones, consentimientos, firmas y fotografías desde un solo lugar.</p>
+<div class="grid">
+<div class="card"><h2 id="statPac">0</h2><p>Pacientes</p></div>
+<div class="card"><h2 id="statAt">0</h2><p>Atenciones</p></div>
+<div class="card"><h2 id="statCit">0</h2><p>Citas</p></div>
+</div>
+</section>
 
-      <button class="principal">
-        <span class="icono">👤</span>
-        Nuevo paciente
-      </button>
+<section id="nuevo" class="card hidden">
+<h2>👤 Ficha del paciente</h2>
+<form id="formPaciente">
+<div class="grid">
+<div><label>Nombre completo *</label><input id="nombre" required></div>
+<div><label>Documento *</label><input id="documento" required></div>
+<div><label>Fecha de nacimiento</label><input id="nacimiento" type="date"></div>
+<div><label>Teléfono / WhatsApp *</label><input id="telefono" required></div>
+<div><label>Correo</label><input id="correo" type="email"></div>
+<div><label>Dirección</label><input id="direccion"></div>
+</div>
 
-      <button>
-        <span class="icono">🔎</span>
-        Buscar paciente
-      </button>
+<h3>Antecedentes y salud</h3>
+<div class="grid">
+<div><label>Enfermedades / diagnósticos</label><textarea id="enfermedades"></textarea></div>
+<div><label>Alergias</label><textarea id="alergias"></textarea></div>
+<div><label>Medicamentos</label><textarea id="medicamentos"></textarea></div>
+<div><label>Antecedentes quirúrgicos</label><textarea id="quirurgicos"></textarea></div>
+<div><label>Antecedentes familiares</label><textarea id="familiares"></textarea></div>
+<div><label>Observaciones de salud</label><textarea id="salud"></textarea></div>
+</div>
 
-      <button>
-        <span class="icono">📋</span>
-        Pacientes registrados
-      </button>
+<h3>Tratamiento y patologías a tratar (Selecciona)</h3>
+<div class="checkbox-group">
+  <label class="checkbox-item"><input type="checkbox" id="chkPedicure" onchange="actualizarConsentimiento()"> Pedicure / Profilaxis</label>
+  <label class="checkbox-item"><input type="checkbox" id="chkOnicomicosis" onchange="actualizarConsentimiento()"> Hongos / Mercado / Onicomicosis</label>
+  <label class="checkbox-item"><input type="checkbox" id="chkEncarnadas" onchange="actualizarConsentimiento()"> Uñas encarnadas (Onicocriptosis)</label>
+  <label class="checkbox-item"><input type="checkbox" id="chkCallosidades" onchange="actualizarConsentimiento()"> Callosidades (Hiperqueratosis)</label>
+  <label class="checkbox-item"><input type="checkbox" id="chkVerrugas" onchange="actualizarConsentimiento()"> Verrugas plantares (Helomas)</label>
+</div>
 
-      <button>
-        <span class="icono">📅</span>
-        Agenda de citas
-      </button>
+<h3>Valoración y atención</h3>
+<div class="grid">
+<div><label>Motivo de consulta</label><textarea id="motivo"></textarea></div>
+<div><label>Valoración podológica</label><textarea id="valoracion"></textarea></div>
+<div><label>Procedimiento realizado</label><textarea id="procedimiento"></textarea></div>
+<div><label>Zona tratada</label><input id="zona"></div>
+<div><label>Recomendaciones</label><textarea id="recomendaciones"></textarea></div>
+<div><label>Profesional</label><input id="profesional" value="Feetsalud"></div>
+</div>
 
-      <button>
-        <span class="icono">📄</span>
-        Consentimientos informados
-      </button>
+<h3>📷 Fotografías</h3>
+<div class="photo-grid">
+<div><label>Foto antes</label><input id="fotoAntes" type="file" accept="image/*" onchange="foto(this,'antes')"><img id="imgAntes" class="photo hidden"></div>
+<div><label>Foto después</label><input id="fotoDespues" type="file" accept="image/*" onchange="foto(this,'despues')"><img id="imgDespues" class="photo hidden"></div>
+</div>
 
-    </section>
+<h3>📄 Consentimiento informado y deslinde de responsabilidad</h3>
+<div class="consent-box" id="textoConsentimiento">
+  Selecciona las patologías o procedimientos para visualizar las cláusulas del consentimiento informado...
+</div>
+<br>
+<label><input id="acepta" type="checkbox" required style="width:auto"> He leído, comprendo y acepto los términos del consentimiento informado y deslinde de responsabilidad *</label>
 
-    <div class="pie">
-      Feetsalud · Atención podológica
-    </div>
+<h3>✍️ Firma del paciente</h3>
+<canvas id="firma"></canvas>
+<button type="button" class="secondary" onclick="limpiarFirma()">Limpiar firma</button>
 
-  </main>
+<div style="margin-top:15px">
+<button class="success" type="submit">💾 Guardar paciente</button>
+<button class="secondary" type="button" onclick="limpiarFormulario()">Limpiar</button>
+</div>
+</form>
+</section>
 
+<section id="buscar" class="card hidden">
+<h2>🔎 Pacientes</h2>
+<input id="busqueda" placeholder="Buscar por nombre o documento" oninput="cargarPacientes()">
+<div id="lista"></div>
+</section>
+
+<section id="detalle" class="card hidden">
+<div id="detalleContenido"></div>
+<button class="secondary" onclick="mostrar('buscar')">← Volver</button>
+</section>
+
+<section id="agenda" class="card hidden">
+<h2>📅 Agenda de Citas</h2>
+<div class="grid">
+<div><label>Paciente</label><input id="citaPaciente" placeholder="Nombre del paciente"></div>
+<div><label>Teléfono WhatsApp</label><input id="citaTelefono" placeholder="Ej: 3001234567"></div>
+<div><label>Fecha</label><input id="citaFecha" type="date"></div>
+<div><label>Hora</label><input id="citaHora" type="time"></div>
+<div><label>Procedimiento</label><input id="citaProcedimiento" placeholder="Ej: Uña encarnada, pedicure..."></div>
+</div>
+<button class="primary" onclick="guardarCita()">➕ Guardar Cita y Enviar WhatsApp</button>
+<hr><div id="listaCitas"></div>
+</section>
+
+<section id="respaldo" class="card hidden">
+<h2>💾 Copias de seguridad y descarga</h2>
+<p>Exporta o descarga una copia completa de la base de datos guardada.</p>
+<button class="success" onclick="exportar()">⬇️ Descargar copia de respaldo (.JSON)</button>
+<hr>
+<label style="margin-top:15px">Importar respaldo previo</label>
+<input type="file" accept=".json" onchange="importar(event)">
+<hr>
+<button class="danger" onclick="borrarTodo()">⚠️ Borrar todos los datos localmente</button>
+</section>
+</main>
+</div>
+
+<script>
+const USUARIO='feetsalud';
+const CLAVE='Feetsalud2026!';
+const PK='feetsalud_pacientes_v2';
+const CK='feetsalud_citas_v2';
+let pacientes=JSON.parse(localStorage.getItem(PK)||'[]');
+let citas=JSON.parse(localStorage.getItem(CK)||'[]');
+let fotoAntesData='',fotoDespuesData='',firmaVacia=true;
+
+function login(){
+ const u=document.getElementById('loginUser').value;
+ const p=document.getElementById('loginPass').value;
+ if(u===USUARIO&&p===CLAVE){
+   sessionStorage.setItem('feetsalud_login','1');
+   document.getElementById('login').classList.add('hidden');
+   document.getElementById('app').classList.remove('hidden');
+   actualizar();
+ }else document.getElementById('loginError').textContent='Usuario o contraseña incorrectos.';
+}
+function logout(){
+ sessionStorage.removeItem('feetsalud_login');
+ location.reload();
+}
+if(sessionStorage.getItem('feetsalud_login')==='1'){
+ document.getElementById('login').classList.add('hidden');
+ document.getElementById('app').classList.remove('hidden');
+}
+
+function mostrar(id){
+ ['inicio','nuevo','buscar','detalle','agenda','respaldo'].forEach(x=>document.getElementById(x).classList.add('hidden'));
+ document.getElementById(id).classList.remove('hidden');
+ window.scrollTo(0,0);
+ actualizar();
+}
+function actualizar(){
+ document.getElementById('statPac').textContent=pacientes.length;
+ document.getElementById('statCit').textContent=citas.length;
+ document.getElementById('statAt').textContent=pacientes.reduce((n,p)=>n+(p.atenciones?.length||1),0);
+}
+function nuevoPaciente(){limpiarFormulario();mostrar('nuevo')}
+
+function actualizarConsentimiento(){
+ const p = document.getElementById('chkPedicure').checked;
+ const o = document.getElementById('chkOnicomicosis').checked;
+ const e = document.getElementById('chkEncarnadas').checked;
+ const c = document.getElementById('chkCallosidades').checked;
+ const v = document.getElementById('chkVerrugas').checked;
+
+ let html = `<p><b>DECLARACIÓN Y DESLINDE DE RESPONSABILIDAD PODOLÓGICA</b></p>`;
+ html += `<p>El paciente autoriza a <b>FEETSALUD</b> a realizar el tratamiento podológico seleccionado. Declara haber sido informado/a claramente sobre los procedimientos, beneficios, cuidados posteriores y posibles riesgos inherentes.</p><ul>`;
+
+ if(p) html += `<li><b>Pedicure / Profilaxis:</b> Procedimiento estético y preventivo. Puede existir leve sensibilidad transitoria.</li>`;
+ if(o) html += `<li><b>Tratamiento Hongos / Onicomicosis:</b> Requiere constancia en casa. Se pueden presentar molestias leves en el limado. El resultado depende de la disciplina del paciente.</li>`;
+ if(e) html += `<li><b>Uñas Encarnadas (Onicocriptosis):</b> Al desencarnar la espícula puede presentarse inflamación, molestia post-procedimiento o enrojecimiento temporal.</li>`;
+ if(c) html += `<li><b>Callosidades (Hiperqueratosis):</b> Deslaminado de piel engrosada. Puede experimentarse mayor sensibilidad táctil durante las primeras 24-48 horas.</li>`;
+ if(v) html += `<li><b>Verrugas Plantares (Helomas):</b> Tratamiento progresivo que puede requerir múltiples sesiones. Puede ocasionar molestia local.</li>`;
+ 
+ if(!p && !o && !e && !c && !v){
+   html += `<li>Atención podológica general y valoración.</li>`;
+ }
+
+ html += `</ul><p><b>EXONERACIÓN DE RESPONSABILIDAD:</b> El paciente certifica que ha brindado información real sobre sus antecedentes de salud. <b>FEETSALUD</b> queda exento de responsabilidad por complicaciones resultantes del incumplimiento de las indicaciones post-atención.</p>`;
+
+ document.getElementById('textoConsentimiento').innerHTML = html;
+}
+
+function limpiarFormulario(){
+ document.getElementById('formPaciente').reset();
+ document.getElementById('profesional').value='Feetsalud';
+ fotoAntesData='';fotoDespuesData='';
+ document.getElementById('imgAntes').classList.add('hidden');
+ document.getElementById('imgDespues').classList.add('hidden');
+ actualizarConsentimiento();
+ limpiarFirma();
+}
+
+function foto(input,tipo){
+ const f=input.files[0];if(!f)return;
+ const r=new FileReader();
+ r.onload=e=>{
+  if(tipo==='antes'){fotoAntesData=e.target.result;document.getElementById('imgAntes').src=e.target.result;document.getElementById('imgAntes').classList.remove('hidden')}
+  else{fotoDespuesData=e.target.result;document.getElementById('imgDespues').src=e.target.result;document.getElementById('imgDespues').classList.remove('hidden')}
+ };
+ r.readAsDataURL(f);
+}
+
+const canvas=document.getElementById('firma'),ctx=canvas.getContext('2d');
+let dibujando=false;
+function resizeCanvas(){const r=canvas.getBoundingClientRect(),d=devicePixelRatio||1;canvas.width=r.width*d;canvas.height=190*d;ctx.setTransform(d,0,0,d,0,0);ctx.lineWidth=2;ctx.lineCap='round';ctx.strokeStyle='#111'}
+resizeCanvas();addEventListener('resize',resizeCanvas);
+function punto(e){const r=canvas.getBoundingClientRect(),p=e.touches?e.touches[0]:e;return{x:p.clientX-r.left,y:p.clientY-r.top}}
+function iniciar(e){e.preventDefault();dibujando=true;firmaVacia=false;const p=punto(e);ctx.beginPath();ctx.moveTo(p.x,p.y)}
+function dibujar(e){if(!dibujando)return;e.preventDefault();const p=punto(e);ctx.lineTo(p.x,p.y);ctx.stroke()}
+function terminar(){dibujando=false}
+canvas.addEventListener('mousedown',iniciar);canvas.addEventListener('mousemove',dibujar);canvas.addEventListener('mouseup',terminar);canvas.addEventListener('touchstart',iniciar,{passive:false});canvas.addEventListener('touchmove',dibujar,{passive:false});canvas.addEventListener('touchend',terminar);
+function limpiarFirma(){ctx.clearRect(0,0,canvas.width,canvas.height);firmaVacia=true}
+
+document.getElementById('formPaciente').addEventListener('submit',e=>{
+ e.preventDefault();
+ const servicios = [];
+ if(document.getElementById('chkPedicure').checked) servicios.push('Pedicure');
+ if(document.getElementById('chkOnicomicosis').checked) servicios.push('Onicomicosis/Mercado');
+ if(document.getElementById('chkEncarnadas').checked) servicios.push('Uña Encarnada');
+ if(document.getElementById('chkCallosidades').checked) servicios.push('Callosidades');
+ if(document.getElementById('chkVerrugas').checked) servicios.push('Verrugas Plantares');
+
+ const p={
+  id:Date.now(),nombre:nombre.value.trim(),documento:documento.value.trim(),nacimiento:nacimiento.value,
+  telefono:telefono.value,correo:correo.value,direccion:direccion.value,enfermedades:enfermedades.value,
+  alergias:alergias.value,medicamentos:medicamentos.value,quirurgicos:quirurgicos.value,familiares:familiares.value,
+  salud:salud.value,atenciones:[{fecha:new Date().toISOString(),servicios:servicios,motivo:motivo.value,valoracion:valoracion.value,
+  procedimiento:procedimiento.value,zona:zona.value,recomendaciones:recomendaciones.value,profesional:profesional.value,
+  fotoAntes:fotoAntesData,fotoDespues:fotoDespuesData,firma:firmaVacia?'':canvas.toDataURL('image/png')}]
+ };
+ pacientes.push(p);guardar();alert('Paciente guardado correctamente.');mostrar('buscar');cargarPacientes();limpiarFormulario();
+});
+
+function guardar(){localStorage.setItem(PK,JSON.stringify(pacientes));localStorage.setItem(CK,JSON.stringify(citas))}
+function cargarPacientes(){
+ const q=(document.getElementById('busqueda')?.value||'').toLowerCase();
+ const l=document.getElementById('lista');
+ const a=pacientes.filter(p=>(p.nombre+' '+p.documento).toLowerCase().includes(q)).reverse();
+ l.innerHTML=a.length?a.map(p=>`<div class="patient"><strong>${esc(p.nombre)}</strong> <span class="badge">${esc(p.documento)}</span><p>${esc(p.telefono||'Sin teléfono')}</p><button class="primary" onclick="verPaciente(${p.id})">Ver ficha</button><button class="danger" onclick="eliminarPaciente(${p.id})">Eliminar</button></div>`).join(''):'<p>No hay pacientes registrados.</p>';
+}
+
+function verPaciente(id){
+ const p=pacientes.find(x=>x.id===id);if(!p)return;
+ const a=p.atenciones||[];
+ document.getElementById('detalleContenido').innerHTML=`
+ <h2>👤 ${esc(p.nombre)}</h2>
+ <button class="primary" onclick="window.print()" style="margin-bottom:15px">🖨️ Imprimir / Guardar Ficha en PDF</button>
+ <p><b>Documento:</b> ${esc(p.documento)}</p><p><b>Nacimiento:</b> ${esc(p.nacimiento||'—')}</p>
+ <p><b>Teléfono:</b> ${esc(p.telefono||'—')}</p><p><b>Correo:</b> ${esc(p.correo||'—')}</p><p><b>Dirección:</b> ${esc(p.direccion||'—')}</p>
+ <h3>Antecedentes</h3><p><b>Enfermedades:</b><br>${esc(p.enfermedades||'—')}</p><p><b>Alergias:</b><br>${esc(p.alergias||'—')}</p><p><b>Medicamentos:</b><br>${esc(p.medicamentos||'—')}</p>
+ <h3>Historial de atenciones</h3>${a.map((x,i)=>`<div class="patient"><b>Atención ${i+1}</b><br><b>Tratamientos:</b> ${esc((x.servicios||[]).join(', ')||\'Podología general\')}<p><b>Motivo:</b> ${esc(x.motivo)}</p><p><b>Valoración:</b> ${esc(x.valoracion)}</p><p><b>Procedimiento:</b> ${esc(x.procedimiento)}</p><p><b>Recomendaciones:</b> ${esc(x.recomendaciones)}</p>${x.fotoAntes?`<img class="photo" src="${x.fotoAntes}">`:''}${x.fotoDespues?`<img class="photo" src="${x.fotoDespues}">`:''}${x.firma?`<p>Firma de consentimiento:</p><img class="photo" src="${x.firma}" style="max-width:400px;height:130px;object-fit:contain">`:''}</div>`).join('')}`;
+ mostrar('detalle');
+}
+
+function eliminarPaciente(id){if(confirm('¿Eliminar este paciente?')){pacientes=pacientes.filter(p=>p.id!==id);guardar();cargarPacientes();actualizar()}}
+
+function normalizarTelefono(t){let n=String(t||'').replace(/\D/g,'');if(n.startsWith('57')&&n.length>=12)return n;if(n.length===10)return '57'+n;return n}
+
+function guardarCita(){
+ const p=citaPaciente.value.trim(),f=citaFecha.value,h=citaHora.value,pr=citaProcedimiento.value.trim(), t=citaTelefono.value.trim();
+ if(!p||!f||!h){alert('Completa paciente, fecha y hora.');return}
+ 
+ const tel = normalizarTelefono(t);
+ const nuevaCita = {id:Date.now(),paciente:p,fecha:f,hora:h,procedimiento:pr,telefono:tel,enviadoWhatsApp:false, recordatorio30MinEnviado:false};
+ citas.push(nuevaCita);
+ guardar();cargarCitas();actualizar();
+ 
+ if(confirm('Cita guardada. ¿Deseas enviar confirmación inmediata por WhatsApp?')){
+   enviarWhatsApp(nuevaCita.id, 'confirmacion');
+ }
+ citaPaciente.value='';citaFecha.value='';citaHora.value='';citaProcedimiento.value='';citaTelefono.value='';
+}
+
+function cargarCitas(){
+ const l=document.getElementById('listaCitas');
+ l.innerHTML=citas.length?[...citas].sort((a,b)=>(a.fecha+a.hora).localeCompare(b.fecha+b.hora)).map(c=>`<div class="patient"><b>${esc(c.paciente)}</b> <span class="status">${c.enviadoWhatsApp?'WhatsApp enviado':'Pendiente'}</span><br>📅 ${esc(c.fecha)} 🕐 ${esc(c.hora)}<br>🦶 ${esc(c.procedimiento||'Consulta podológica')}<br>📱 ${esc(c.telefono||'Sin WhatsApp')}<br><button class="whatsapp" onclick="enviarWhatsApp(${c.id}, 'confirmacion')">📲 Confirmación</button> <button class="primary" onclick="enviarWhatsApp(${c.id}, 'recordatorio')">⏰ Recordatorio 30m</button><button class="danger" onclick="eliminarCita(${c.id})">Eliminar</button></div>`).join(''):'<p>No hay citas agendadas.</p>';
+}
+
+function enviarWhatsApp(id, tipo){
+ const c=citas.find(x=>x.id===id);if(!c)return;
+ let tel=normalizarTelefono(c.telefono);
+ if(!tel){alert('No hay un número de WhatsApp registrado.');return}
+ 
+ let msg = '';
+ if(tipo==='confirmacion'){
+   msg=`Hola, ${c.paciente} 👋\n\nConfirmamos tu cita en *FEETSALUD PODOLOGÍA* 👣\n\n📅 Fecha: ${c.fecha}\n🕐 Hora: ${c.hora}\n🦶 Procedimiento: ${c.procedimiento||'Consulta podológica'}\n\n¡Te esperamos! 💙`;
+ } else {
+   msg=`Hola, ${c.paciente} 👋\n\nTe recordamos que tu cita en *FEETSALUD PODOLOGÍA* es en *30 MINUTOS* (a las ${c.hora}) 👣.\n\n¡Nos vemos pronto! 💙`;
+ }
+
+ c.telefono=tel;c.enviadoWhatsApp=true;
+ if(tipo==='recordatorio') c.recordatorio30MinEnviado=true;
+ guardar();cargarCitas();
+ window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+function eliminarCita(id){if(confirm('¿Eliminar esta cita?')){citas=citas.filter(c=>c.id!==id);guardar();cargarCitas();actualizar()}}
+
+function exportar(){
+ const blob=new Blob([JSON.stringify({pacientes,citas},null,2)],{type:'application/json'}),a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);a.download='respaldo-feetsalud.json';a.click();URL.revokeObjectURL(a.href);
+}
+function importar(e){
+ const f=e.target.files[0];if(!f)return;const r=new FileReader();
+ r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.pacientes)||!Array.isArray(d.citas))throw 0;pacientes=d.pacientes;citas=d.citas;guardar();actualizar();alert('Respaldo importado.')}catch{alert('Respaldo no válido.')}};r.readAsText(f);
+}
+function borrarTodo(){if(confirm('¿Borrar todos los datos?')){pacientes=[];citas=[];guardar();actualizar();alert('Datos eliminados.')}}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+
+actualizarConsentimiento();
+</script>
 </body>
 </html>
