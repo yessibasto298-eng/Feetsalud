@@ -675,3 +675,167 @@ Cambiar clave
 
 <p>
 La clave
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feetsalud</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f6fb;
+}
+
+#login{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#155eef,#d9468c);
+}
+
+.caja{
+    background:white;
+    width:90%;
+    max-width:380px;
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 40px #0005;
+}
+
+.logo{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#155eef,#d9468c);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:auto;
+    font-size:35px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    margin:15px 0;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:10px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:10px;
+    background:#155eef;
+    color:white;
+    font-weight:bold;
+    font-size:16px;
+}
+
+#error{
+    color:red;
+    display:none;
+    margin-top:12px;
+}
+
+#app{
+    display:none;
+    padding:25px;
+}
+
+header{
+    background:linear-gradient(135deg,#155eef,#d9468c);
+    color:white;
+    padding:25px;
+    border-radius:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="login">
+
+    <div class="caja">
+
+        <div class="logo">F</div>
+
+        <h1>Feetsalud</h1>
+
+        <p>🔐 Acceso al sistema</p>
+
+        <input
+            id="clave"
+            type="password"
+            placeholder="Escribe tu clave"
+        >
+
+        <button onclick="entrar()">
+            INGRESAR
+        </button>
+
+        <div id="error">
+            ❌ Clave incorrecta
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="app">
+
+    <header>
+
+        <h1>Feetsalud Podología</h1>
+
+        <p>
+            ¡Bienvenida al sistema!
+        </p>
+
+    </header>
+
+    <h2>Panel principal</h2>
+
+    <p>
+        El acceso funciona correctamente.
+    </p>
+
+</div>
+
+
+<script>
+
+function entrar(){
+
+    const clave =
+        document.getElementById("clave").value;
+
+    if(clave === "Feetsalud2026"){
+
+        document.getElementById("login").style.display="none";
+
+        document.getElementById("app").style.display="block";
+
+    }else{
+
+        document.getElementById("error").style.display="block";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
