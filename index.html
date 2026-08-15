@@ -1,389 +1,2594 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FeetSalud - Aplicación de Podología</title>
-  <style>
-    :root {
-      --primary: #00A896;
-      --secondary: #028090;
-      --bg: #F4F9F9;
-      --text: #333333;
-      --white: #FFFFFF;
-      --border: #CCCCCC;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feetsalud - Gestión Podológica</title>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Segoe UI,Arial,sans-serif;
+  background:#f0fdf4;
+  color:#334155
+}
+button,input,select,textarea{font:inherit}
 
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+.app{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column
+}
 
-    /* --- BARRA MENÚ DESPLEGABLE SUPERIOR --- */
-    .top-nav {
-      background-color: var(--primary);
-      color: var(--white);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-    }
+/* =========================
+   MENÚ SUPERIOR
+========================= */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:#134e4a;
+  color:white;
+  box-shadow:0 2px 10px #0003
+}
 
-    .nav-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 18px;
-    }
+.topbar-main{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:13px 18px
+}
 
-    .nav-title {
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px
+}
 
-    .menu-btn {
-      background: none;
-      border: none;
-      color: var(--white);
-      font-size: 1.6rem;
-      cursor: pointer;
-    }
+.brand-icon{
+  font-size:28px
+}
 
-    .nav-menu {
-      display: none;
-      flex-direction: column;
-      background-color: var(--secondary);
-      width: 100%;
-    }
+.brand h2{
+  margin:0;
+  font-size:20px
+}
 
-    .nav-menu.active {
-      display: flex;
-    }
+.menu-button{
+  border:0;
+  background:#0d9488;
+  color:white;
+  border-radius:8px;
+  padding:8px 12px;
+  font-size:22px;
+  cursor:pointer
+}
 
-    .nav-link {
-      padding: 14px 20px;
-      color: var(--white);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      cursor: pointer;
-      font-weight: 500;
-    }
+.top-menu{
+  display:none;
+  background:#0f766e;
+  padding:8px
+}
 
-    .nav-link:hover {
-      background-color: rgba(255, 255, 255, 0.15);
-    }
+.top-menu.open{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px
+}
 
-    /* --- CONTENEDOR PRINCIPAL --- */
-    .content {
-      padding: 15px;
-      max-width: 900px;
-      margin: 0 auto;
-      width: 100%;
-      flex: 1;
-    }
+.top-menu button{
+  border:0;
+  background:transparent;
+  color:#d1fae5;
+  padding:11px;
+  border-radius:7px;
+  cursor:pointer;
+  font-weight:600;
+  text-align:left
+}
 
-    .section-card {
-      background: var(--white);
-      padding: 18px;
-      border-radius: 8px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-      display: none;
-    }
+.top-menu button:hover,
+.top-menu button.active{
+  background:#0d9488;
+  color:white
+}
 
-    .section-card.active {
-      display: block;
-    }
+.logout-top{
+  background:#dc2626!important;
+  color:white!important
+}
 
-    h2 {
-      color: var(--secondary);
-      margin-bottom: 15px;
-      font-size: 1.25rem;
-      border-bottom: 2px solid var(--primary);
-      padding-bottom: 6px;
-    }
+/* =========================
+   CONTENIDO
+========================= */
+.main{
+  width:100%;
+  max-width:1100px;
+  margin:auto;
+  padding:25px 18px
+}
 
-    .form-group {
-      margin-bottom: 12px;
-    }
+.title{
+  color:#134e4a;
+  margin:0 0 20px
+}
 
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      font-size: 0.9rem;
-    }
+.card{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 2px 9px #0000000d;
+  margin-bottom:20px
+}
 
-    .form-group input, .form-group select, .form-group textarea {
-      width: 100%;
-      padding: 9px;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      font-size: 0.95rem;
-    }
+.card h3{
+  color:#0d9488;
+  margin:0 0 15px
+}
 
-    .btn {
-      background-color: var(--primary);
-      color: var(--white);
-      border: none;
-      padding: 11px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-      width: 100%;
-      font-weight: bold;
-      font-size: 0.95rem;
-      margin-top: 5px;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px
+}
 
-    .btn:hover {
-      background-color: var(--secondary);
-    }
+.full{
+  grid-column:1/-1
+}
 
-    /* --- MÓDULO ANTES Y DESPUÉS (IMÁGENES CLÍNICAS) --- */
-    .photo-box {
-      border: 1px dashed var(--primary);
-      padding: 15px;
-      border-radius: 6px;
-      background-color: #FAFFFF;
-      margin-top: 15px;
-    }
+.input{
+  width:100%;
+  padding:11px;
+  border:1px solid #cbd5e1;
+  border-radius:7px;
+  background:white
+}
 
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 12px;
-      margin-top: 15px;
-    }
+textarea.input{
+  resize:vertical
+}
 
-    .photo-item {
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-      background: var(--white);
-      text-align: center;
-    }
+.primary{
+  background:#0d9488;
+  color:white;
+  border:0;
+  padding:11px 15px;
+  border-radius:7px;
+  cursor:pointer;
+  font-weight:bold
+}
 
-    .photo-item img {
-      width: 100%;
-      height: 110px;
-      object-fit: cover;
-      display: block;
-    }
+.primary:hover{
+  background:#0f766e
+}
 
-    .photo-tag {
-      font-size: 0.75rem;
-      padding: 4px;
-      font-weight: bold;
-      color: var(--white);
-    }
+.secondary{
+  background:#e2e8f0;
+  color:#334155;
+  border:0;
+  padding:10px 13px;
+  border-radius:7px;
+  cursor:pointer
+}
 
-    .tag-antes { background-color: #E63946; }
-    .tag-despues { background-color: #2A9D8F; }
-    .tag-evolucion { background-color: #E9C46A; color: #333; }
+.danger{
+  background:#dc2626;
+  color:white;
+  border:0;
+  padding:7px 10px;
+  border-radius:6px;
+  cursor:pointer
+}
 
-    .photo-date {
-      font-size: 0.7rem;
-      color: #666;
-      padding: 3px 0 6px 0;
-    }
-  </style>
+.searchTop{
+  position:sticky;
+  top:67px;
+  z-index:50
+}
+
+.search{
+  display:flex;
+  gap:10px
+}
+
+.item{
+  padding:13px;
+  border-bottom:1px solid #e2e8f0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px
+}
+
+.muted{
+  color:#64748b;
+  font-size:13px
+}
+
+.section{
+  border-top:1px solid #e2e8f0;
+  margin-top:20px;
+  padding-top:20px
+}
+
+.badge{
+  display:inline-block;
+  background:#e0f2fe;
+  color:#0369a1;
+  padding:4px 9px;
+  border-radius:12px;
+  font-size:11px;
+  margin-top:5px;
+  font-weight:bold
+}
+
+/* =========================
+   PODOGRAMA
+========================= */
+.foot-title{
+  font-weight:bold;
+  color:#134e4a;
+  margin:12px 0 8px
+}
+
+.footgrid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px
+}
+
+.toe{
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  padding:12px 5px;
+  background:white;
+  cursor:pointer
+}
+
+.toe.selected{
+  background:#fecaca;
+  border-color:#ef4444;
+  color:#991b1b;
+  font-weight:bold
+}
+
+/* =========================
+   FOTOS
+========================= */
+.photo-controls{
+  border:1px dashed #0d9488;
+  padding:15px;
+  border-radius:9px;
+  background:#f8fffe
+}
+
+.photoGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:12px;
+  margin-top:15px
+}
+
+.photo{
+  background:#e2e8f0;
+  border-radius:9px;
+  overflow:hidden
+}
+
+.photo img{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+  display:block
+}
+
+.photo-info{
+  background:white;
+  padding:8px;
+  font-size:12px
+}
+
+.photo-tag{
+  display:inline-block;
+  padding:4px 7px;
+  border-radius:10px;
+  font-weight:bold;
+  font-size:10px;
+  margin-bottom:5px
+}
+
+.antes{
+  background:#fee2e2;
+  color:#991b1b
+}
+
+.evolucion{
+  background:#fef3c7;
+  color:#92400e
+}
+
+.despues{
+  background:#dcfce7;
+  color:#166534
+}
+
+/* =========================
+   CONSENTIMIENTO
+========================= */
+.consent{
+  background:#f8fafc;
+  border:1px solid #cbd5e1;
+  border-radius:9px;
+  padding:18px;
+  line-height:1.6
+}
+
+.signature{
+  width:100%;
+  height:190px;
+  border:2px solid #94a3b8;
+  background:white;
+  border-radius:8px;
+  touch-action:none;
+  display:block
+}
+
+/* =========================
+   LOGIN
+========================= */
+.login{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ccfbf1;
+  padding:20px
+}
+
+.loginCard{
+  background:white;
+  width:350px;
+  padding:35px;
+  border-radius:14px;
+  box-shadow:0 5px 20px #0002
+}
+
+.loginIcon{
+  font-size:55px;
+  text-align:center
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media(max-width:700px){
+  .top-menu.open{
+    grid-template-columns:1fr 1fr
+  }
+
+  .main{
+    padding:16px 10px
+  }
+
+  .grid{
+    grid-template-columns:1fr
+  }
+
+  .full{
+    grid-column:auto
+  }
+
+  .item{
+    flex-direction:column;
+    align-items:flex-start
+  }
+
+  .footgrid{
+    grid-template-columns:repeat(5,1fr)
+  }
+
+  .search{
+    flex-direction:column
+  }
+
+  .searchTop{
+    top:61px
+  }
+}
+</style>
 </head>
+
 <body>
 
-  <!-- BARRA SUPERIOR DESPLEGABLE -->
-  <nav class="top-nav">
-    <div class="nav-header">
-      <span class="nav-title">FeetSalud Podología</span>
-      <button class="menu-btn" onclick="toggleMenu()">&#9776;</button>
+<div id="root"></div>
+
+<script>
+
+/* =====================================================
+   BASE DE DATOS LOCAL
+===================================================== */
+
+const STORAGE_KEY="FEETSALUD_COMPLETO_V3";
+
+let db;
+
+try{
+  db=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");
+}catch(e){
+  db=null;
+}
+
+if(!db){
+  db={
+    patients:[
+      {
+        id:"1",
+        nombre:"María Rodríguez",
+        cedula:"1018239401",
+        telefono:"573001234567",
+        antecedentes:"Diabetes Tipo 2, Hipertensión",
+        alergias:"Penicilina",
+        medicamentos:"Metformina",
+        tipoPie:"Pie normal",
+        notas:"Dolor en primer hálux derecho.",
+        toes:{
+          derecho:{1:true},
+          izquierdo:{}
+        },
+        photos:[],
+        procedures:[],
+        consents:[],
+        visits:[],
+        payments:[]
+      }
+    ],
+    appointments:[]
+  };
+}
+
+let state={
+  auth:false,
+  tab:"patients",
+  selectedId:null,
+  search:""
+};
+
+function save(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(db));
+}
+
+/* =====================================================
+   SEGURIDAD HTML
+===================================================== */
+
+function esc(value=""){
+  return String(value).replace(/[&<>"']/g,function(m){
+    return {
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[m];
+  });
+}
+
+/* =====================================================
+   PROCEDIMIENTOS
+===================================================== */
+
+const procedures={
+
+  "Uña encarnada (onicocriptosis)":{
+    risk:"dolor, sangrado, inflamación, infección, irritación, retraso en la cicatrización y recurrencia.",
+    care:"mantener la zona limpia y seca, realizar las curaciones indicadas, no manipular la zona, utilizar calzado adecuado y consultar si presenta dolor intenso, secreción, sangrado persistente, aumento de inflamación o signos de infección."
+  },
+
+  "Onicomicosis":{
+    risk:"irritación, sensibilidad, cambios temporales de la uña y persistencia o recurrencia de la infección.",
+    care:"mantener los pies limpios y secos, seguir el tratamiento indicado, no compartir elementos personales y asistir a los controles."
+  },
+
+  "Pedicure medicado / profilaxis podológica":{
+    risk:"sensibilidad, irritación, pequeñas lesiones, sangrado superficial o infección.",
+    care:"mantener una adecuada higiene, observar cualquier cambio en la piel o uñas y seguir las recomendaciones entregadas."
+  },
+
+  "Callos y clavos":{
+    risk:"dolor, irritación, sangrado superficial, infección o recurrencia.",
+    care:"no manipular la zona, utilizar calzado apropiado y seguir las recomendaciones de cuidado."
+  },
+
+  "Fenolización":{
+    risk:"dolor, inflamación, sangrado, infección, alteración de la cicatrización y recurrencia.",
+    care:"realizar las curaciones indicadas, mantener la zona protegida, no retirar costras y consultar ante signos de alarma."
+  },
+
+  "Verruga plantar":{
+    risk:"dolor, irritación, sangrado, infección, cambios en la piel y recurrencia.",
+    care:"mantener limpia la zona, evitar manipularla, seguir las indicaciones dadas y asistir a controles."
+  }
+};
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function login(e){
+
+  e.preventDefault();
+
+  const user=document.getElementById("loginUser").value.trim();
+  const pass=document.getElementById("loginPass").value;
+
+  if(user==="admin" && pass==="1234"){
+
+    state.auth=true;
+    render();
+
+  }else{
+
+    alert("Usuario o contraseña incorrectos.\n\nUsuario: admin\nContraseña: 1234");
+
+  }
+}
+
+function logout(){
+
+  state.auth=false;
+  state.selectedId=null;
+  render();
+
+}
+
+/* =====================================================
+   MENÚ
+===================================================== */
+
+function toggleMenu(){
+
+  document.getElementById("topMenu").classList.toggle("open");
+
+}
+
+function go(tab){
+
+  state.tab=tab;
+
+  document.getElementById("topMenu").classList.remove("open");
+
+  render();
+
+}
+
+/* =====================================================
+   LAYOUT
+===================================================== */
+
+function render(){
+
+  const root=document.getElementById("root");
+
+  if(!state.auth){
+
+    root.innerHTML=`
+
+      <div class="login">
+
+        <div class="loginCard">
+
+          <div class="loginIcon">🦶</div>
+
+          <h2 style="text-align:center;color:#134e4a;margin:8px 0">
+            Feetsalud
+          </h2>
+
+          <p style="text-align:center;color:#64748b">
+            Gestión de Podología
+          </p>
+
+          <form onsubmit="login(event)">
+
+            <label>Usuario</label>
+            <input
+              class="input"
+              id="loginUser"
+              placeholder="admin"
+              required
+            >
+
+            <br><br>
+
+            <label>Contraseña</label>
+
+            <input
+              class="input"
+              id="loginPass"
+              type="password"
+              placeholder="1234"
+              required
+            >
+
+            <br><br>
+
+            <button class="primary" style="width:100%">
+              Iniciar Sesión
+            </button>
+
+          </form>
+
+          <p class="muted" style="text-align:center;margin-top:15px">
+            Demo: admin / 1234
+          </p>
+
+        </div>
+
+      </div>
+    `;
+
+    return;
+  }
+
+  root.innerHTML=`
+
+    <div class="app">
+
+      <header class="topbar">
+
+        <div class="topbar-main">
+
+          <div class="brand">
+            <span class="brand-icon">🦶</span>
+            <h2>Feetsalud</h2>
+          </div>
+
+          <button class="menu-button" onclick="toggleMenu()">
+            ☰
+          </button>
+
+        </div>
+
+        <div class="top-menu" id="topMenu">
+
+          ${menuButton("patients","👤","Pacientes")}
+          ${menuButton("appointments","📅","Citas")}
+          ${menuButton("payments","💳","Pagos y Caja")}
+          ${menuButton("consent","📄","Consentimiento")}
+          ${menuButton("podograma","👣","Podograma")}
+          ${menuButton("backup","💾","Respaldo")}
+          ${menuButton("logout","🚪","Cerrar Sesión")}
+
+        </div>
+
+      </header>
+
+      <main class="main">
+
+        ${content()}
+
+      </main>
+
     </div>
-    <div class="nav-menu" id="navMenu">
-      <a class="nav-link" onclick="showSection('pacientes')">Pacientes</a>
-      <a class="nav-link" onclick="showSection('podograma')">Podograma</a>
-      <a class="nav-link" onclick="showSection('historia')">Historia Clínica</a>
-      <a class="nav-link" onclick="showSection('consentimiento')">Consentimiento Informado</a>
-      <a class="nav-link" onclick="showSection('citas')">Citas</a>
-      <a class="nav-link" onclick="showSection('ventas')">Ventas y Caja</a>
-      <a class="nav-link" onclick="showSection('respaldo')">Respaldo de Datos</a>
+  `;
+
+  if(state.tab==="consent"){
+    setTimeout(initConsent,100);
+  }
+}
+
+function menuButton(tab,icon,text){
+
+  if(tab==="logout"){
+
+    return `
+      <button class="logout-top" onclick="logout()">
+        ${icon} ${text}
+      </button>
+    `;
+
+  }
+
+  return `
+    <button
+      class="${state.tab===tab?"active":""}"
+      onclick="go('${tab}')"
+    >
+      ${icon} ${text}
+    </button>
+  `;
+}
+
+function content(){
+
+  if(state.tab==="patients")return patientsPage();
+
+  if(state.tab==="appointments")return appointmentsPage();
+
+  if(state.tab==="payments")return paymentsPage();
+
+  if(state.tab==="consent")return consentPage();
+
+  if(state.tab==="podograma")return podogramaPage();
+
+  if(state.tab==="backup")return backupPage();
+
+  return "";
+}
+
+/* =====================================================
+   PACIENTES
+===================================================== */
+
+function patientsPage(){
+
+  const search=state.search.toLowerCase();
+
+  const list=db.patients.filter(p=>
+    (
+      p.nombre+" "+
+      p.cedula+" "+
+      p.telefono
+    ).toLowerCase().includes(search)
+  );
+
+  const patient=db.patients.find(
+    p=>p.id===state.selectedId
+  );
+
+  return `
+
+    <h2 class="title">
+      Historias Clínicas Podológicas
+    </h2>
+
+    <div class="card searchTop">
+
+      <h3>🔎 Buscar paciente</h3>
+
+      <div class="search">
+
+        <input
+          class="input"
+          placeholder="Nombre, cédula o teléfono"
+          value="${esc(state.search)}"
+          oninput="state.search=this.value;render()"
+        >
+
+        <button
+          class="secondary"
+          onclick="state.search='';render()"
+        >
+          Limpiar
+        </button>
+
+      </div>
+
+      ${
+        state.search
+        ?
+        `<div class="section">
+
+          ${
+            list.length
+            ?
+            list.map(p=>`
+
+              <div class="item">
+
+                <div>
+                  <b>${esc(p.nombre)}</b>
+                  <br>
+                  <span class="muted">
+                    C.C. ${esc(p.cedula)}
+                    · ${esc(p.telefono)}
+                  </span>
+                </div>
+
+                <button
+                  class="primary"
+                  onclick="selectPatient('${p.id}')"
+                >
+                  Abrir expediente
+                </button>
+
+              </div>
+
+            `).join("")
+            :
+            `<p>No se encontró ningún paciente.</p>`
+          }
+
+        </div>`
+        :
+        ""
+      }
+
     </div>
-  </nav>
 
-  <main class="content">
+    ${
+      patient
+      ?
+      patientRecord(patient)
+      :
+      newPatientForm()
+    }
 
-    <!-- SECCIÓN: PACIENTES -->
-    <section id="pacientes" class="section-card active">
-      <h2>Registro de Paciente</h2>
-      <div class="form-group">
-        <label>Nombre Completo:</label>
-        <input type="text" placeholder="Ej: Maria Lopez">
+  `;
+}
+
+/* =====================================================
+   NUEVO PACIENTE
+===================================================== */
+
+function newPatientForm(){
+
+  return `
+
+    <div class="card">
+
+      <h3>👤 Registrar Nuevo Paciente</h3>
+
+      <form
+        onsubmit="addPatient(event)"
+        class="grid"
+      >
+
+        <input
+          class="input"
+          id="pnombre"
+          placeholder="Nombre completo"
+          required
+        >
+
+        <input
+          class="input"
+          id="pcedula"
+          placeholder="Cédula / Documento"
+          required
+        >
+
+        <input
+          class="input"
+          id="ptel"
+          placeholder="Teléfono WhatsApp"
+          required
+        >
+
+        <input
+          class="input"
+          id="pant"
+          placeholder="Antecedentes"
+        >
+
+        <input
+          class="input"
+          id="paler"
+          placeholder="Alergias conocidas"
+        >
+
+        <input
+          class="input"
+          id="pmed"
+          placeholder="Medicamentos que utiliza"
+        >
+
+        <input
+          class="input"
+          id="ptipo"
+          placeholder="Tipo de pie"
+        >
+
+        <textarea
+          class="input full"
+          id="pnotas"
+          rows="4"
+          placeholder="Historia / observaciones podológicas"
+        ></textarea>
+
+        <button class="primary full">
+          💾 Guardar Paciente
+        </button>
+
+      </form>
+
+    </div>
+
+  `;
+}
+
+/* =====================================================
+   EXPEDIENTE COMPLETO
+===================================================== */
+
+function patientRecord(p){
+
+  return `
+
+    <div class="card">
+
+      <div class="patientHead">
+
+        <div>
+
+          <h3>📋 Expediente completo</h3>
+
+          <h2 style="margin:0;color:#134e4a">
+            ${esc(p.nombre)}
+          </h2>
+
+          <p class="muted">
+            C.C. ${esc(p.cedula)}
+            · ${esc(p.telefono)}
+          </p>
+
+        </div>
+
+        <button
+          class="secondary"
+          onclick="state.selectedId=null;render()"
+        >
+          Cerrar ficha
+        </button>
+
       </div>
-      <div class="form-group">
-        <label>Teléfono (WhatsApp):</label>
-        <input type="tel" placeholder="Ej: 3001234567">
-      </div>
-      <button class="btn">Guardar Paciente</button>
-    </section>
 
-    <!-- SECCIÓN: PODOGRAMA -->
-    <section id="podograma" class="section-card">
-      <h2>Podograma / Mapa de Artejos</h2>
-      <p style="font-size:0.9rem; color:#555; margin-bottom:10px;">Marcación de afecciones en dedos y planta del pie.</p>
-      <div class="form-group">
-        <label>Observaciones del Podograma:</label>
-        <textarea rows="3" placeholder="Ej: Onicocriptosis en primer artejo del pie derecho..."></textarea>
-      </div>
-      <button class="btn">Guardar Podograma</button>
-    </section>
+      <!-- FICHA TÉCNICA -->
 
-    <!-- SECCIÓN: HISTORIA CLÍNICA CON FOTOGRAFÍAS -->
-    <section id="historia" class="section-card">
-      <h2>Historia Clínica</h2>
-      
-      <div class="form-group">
-        <label>Motivo de Consulta:</label>
-        <textarea rows="2" placeholder="Escriba la razón de la consulta..."></textarea>
+      <div class="section">
+
+        <h3>🩺 Ficha técnica podológica</h3>
+
+        <div class="grid">
+
+          <p>
+            <b>Antecedentes:</b><br>
+            ${esc(p.antecedentes)||"Ninguno"}
+          </p>
+
+          <p>
+            <b>Alergias:</b><br>
+            ${esc(p.alergias)||"Ninguna"}
+          </p>
+
+          <p>
+            <b>Medicamentos:</b><br>
+            ${esc(p.medicamentos)||"Ninguno"}
+          </p>
+
+          <p>
+            <b>Tipo de pie:</b><br>
+            ${esc(p.tipoPie)||"No registrado"}
+          </p>
+
+          <p class="full">
+            <b>Observaciones:</b><br>
+            ${esc(p.notas)||"—"}
+          </p>
+
+        </div>
+
       </div>
 
-      <div class="form-group">
-        <label>Tratamiento / Procedimiento Realizado:</label>
-        <textarea rows="2" placeholder="Detalles de la quiropodia o procedimiento..."></textarea>
+      <!-- PODOGRAMA -->
+
+      <div class="section">
+
+        <h3>👣 Podograma · dedos afectados</h3>
+
+        <p class="muted">
+          Selecciona los dedos afectados.
+        </p>
+
+        <div class="foot-title">
+          Pie derecho
+        </div>
+
+        <div class="footgrid">
+          ${toeButtons(p,"derecho")}
+        </div>
+
+        <div class="foot-title">
+          Pie izquierdo
+        </div>
+
+        <div class="footgrid">
+          ${toeButtons(p,"izquierdo")}
+        </div>
+
+        <br>
+
+        <textarea
+          class="input"
+          id="podonota_${p.id}"
+          placeholder="Observaciones del podograma..."
+          rows="3"
+        >${esc(p.podogramaNota||"")}</textarea>
+
+        <br><br>
+
+        <button
+          class="primary"
+          onclick="savePodograma('${p.id}')"
+        >
+          💾 Guardar Podograma
+        </button>
+
       </div>
 
-      <!-- MÓDULO ANTES Y DESPUÉS DE PODOLOGÍA -->
-      <div class="photo-box">
-        <h3 style="font-size: 1rem; color: var(--secondary);">Fotos de Tratamiento (Antes y Después)</h3>
-        
-        <div class="form-group" style="margin-top: 10px;">
-          <label for="photoType">Etiqueta de la Foto:</label>
-          <select id="photoType">
-            <option value="Antes">Antes del Tratamiento</option>
-            <option value="Evolución">Evolución / Proceso</option>
-            <option value="Después">Después del Tratamiento</option>
+      <!-- FOTOS -->
+
+      <div class="section">
+
+        <h3>📸 Fotografías del proceso</h3>
+
+        <div class="photo-controls">
+
+          <div class="grid">
+
+            <select
+              class="input"
+              id="photoType_${p.id}"
+            >
+              <option value="Antes">
+                Antes del procedimiento
+              </option>
+
+              <option value="Evolución">
+                Evolución / Proceso
+              </option>
+
+              <option value="Después">
+                Después del procedimiento
+              </option>
+            </select>
+
+            <button
+              class="primary"
+              onclick="takePhoto('${p.id}')"
+            >
+              📷 Tomar foto
+            </button>
+
+            <label
+              class="primary"
+              style="text-align:center;cursor:pointer"
+            >
+              🖼️ Galería
+
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                style="display:none"
+                onchange="uploadPhotos('${p.id}',this.files)"
+              >
+
+            </label>
+
+          </div>
+
+        </div>
+
+        <div class="photoGrid">
+
+          ${
+            p.photos.length
+            ?
+            p.photos.map((photo,i)=>`
+
+              <div class="photo">
+
+                <img
+                  src="${photo.data}"
+                  alt="Fotografía podológica"
+                >
+
+                <div class="photo-info">
+
+                  <span class="photo-tag ${
+                    photo.type==="Antes"
+                    ?"antes"
+                    :
+                    photo.type==="Después"
+                    ?"despues"
+                    :
+                    "evolucion"
+                  }">
+                    ${esc(photo.type)}
+                  </span>
+
+                  <br>
+
+                  ${esc(photo.date)}
+
+                  <br><br>
+
+                  <button
+                    class="danger"
+                    onclick="deletePhoto('${p.id}',${i})"
+                  >
+                    Eliminar
+                  </button>
+
+                </div>
+
+              </div>
+
+            `).join("")
+            :
+            `<p class="muted">
+              Todavía no hay fotografías de este paciente.
+            </p>`
+          }
+
+        </div>
+
+      </div>
+
+      <!-- PROCEDIMIENTOS -->
+
+      <div class="section">
+
+        <h3>🩺 Procedimientos realizados</h3>
+
+        <form
+          class="grid"
+          onsubmit="addProcedure(event,'${p.id}')"
+        >
+
+          <select
+            class="input"
+            id="procedure_${p.id}"
+          >
+
+            ${Object.keys(procedures).map(x=>
+              `<option>${esc(x)}</option>`
+            ).join("")}
+
           </select>
-        </div>
 
-        <div class="form-group">
-          <label for="photoFile">Cargar o Tomar Foto:</label>
-          <input type="file" id="photoFile" accept="image/*" capture="environment">
-        </div>
+          <input
+            class="input"
+            id="procedureDate_${p.id}"
+            type="date"
+            value="${new Date().toISOString().slice(0,10)}"
+          >
 
-        <button type="button" class="btn" onclick="addPodologyImage()">Agregar Foto a Historia</button>
+          <textarea
+            class="input full"
+            id="procedureNotes_${p.id}"
+            rows="3"
+            placeholder="Qué se realizó, evolución y observaciones..."
+          ></textarea>
 
-        <!-- Galería de imágenes cargadas -->
-        <div class="photo-grid" id="photoGallery"></div>
+          <button class="primary full">
+            💾 Guardar procedimiento
+          </button>
+
+        </form>
+
+        ${
+          p.procedures.length
+          ?
+          p.procedures.map(x=>`
+
+            <div class="item">
+
+              <div>
+
+                <b>${esc(x.name)}</b>
+
+                <br>
+
+                <span class="muted">
+                  ${esc(x.date)}
+                  · ${esc(x.notes)}
+                </span>
+
+              </div>
+
+            </div>
+
+          `).join("")
+          :
+          `<p class="muted">
+            No hay procedimientos registrados.
+          </p>`
+        }
+
       </div>
-    </section>
 
-    <!-- SECCIÓN: CONSENTIMIENTO INFORMADO -->
-    <section id="consentimiento" class="section-card">
+      <!-- CONSENTIMIENTOS -->
+
+      <div class="section">
+
+        <h3>📄 Consentimientos firmados</h3>
+
+        ${
+          p.consents.length
+          ?
+          p.consents.map((c,i)=>`
+
+            <div class="item">
+
+              <div>
+
+                <b>${esc(c.procedure)}</b>
+
+                <br>
+
+                <span class="muted">
+                  ${esc(c.date)}
+                  · Firmado electrónicamente
+                </span>
+
+              </div>
+
+              <button
+                class="secondary"
+                onclick="viewConsent('${p.id}',${i})"
+              >
+                Ver consentimiento
+              </button>
+
+            </div>
+
+          `).join("")
+          :
+          `<p class="muted">
+            No hay consentimientos firmados.
+          </p>`
+        }
+
+      </div>
+
+      <!-- VISITAS -->
+
+      <div class="section">
+
+        <h3>📅 Visitas y evolución</h3>
+
+        ${
+          p.visits.length
+          ?
+          p.visits.map(v=>`
+
+            <div class="item">
+
+              <div>
+
+                <b>${esc(v.date)}</b>
+                · ${esc(v.service)}
+
+                <br>
+
+                <span class="muted">
+                  Estado: ${esc(v.attendance)}
+                </span>
+
+              </div>
+
+            </div>
+
+          `).join("")
+          :
+          `<p class="muted">
+            No hay visitas registradas.
+          </p>`
+        }
+
+      </div>
+
+      <!-- PAGOS -->
+
+      <div class="section">
+
+        <h3>💰 Pagos del paciente</h3>
+
+        ${
+          p.payments.length
+          ?
+          p.payments.map(v=>`
+
+            <div class="item">
+
+              <div>
+                <b>
+                  $${Number(v.amount).toLocaleString("es-CO")}
+                </b>
+
+                · ${esc(v.concept)}
+              </div>
+
+              <span class="muted">
+                ${esc(v.date)}
+                · ${esc(v.method)}
+              </span>
+
+            </div>
+
+          `).join("")
+          :
+          `<p class="muted">
+            No hay pagos registrados.
+          </p>`
+        }
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+/* =====================================================
+   DEDOS
+===================================================== */
+
+function toeButtons(p,foot){
+
+  if(!p.toes){
+    p.toes={
+      derecho:{},
+      izquierdo:{}
+    };
+  }
+
+  if(!p.toes[foot]){
+    p.toes[foot]={};
+  }
+
+  return [1,2,3,4,5].map(n=>`
+
+    <button
+      type="button"
+      class="toe ${p.toes[foot][n]?"selected":""}"
+      onclick="toggleToe('${p.id}','${foot}',${n})"
+    >
+      ${n}º dedo
+      ${p.toes[foot][n]?" ✓":""}
+    </button>
+
+  `).join("");
+}
+
+function toggleToe(id,foot,n){
+
+  const p=db.patients.find(x=>x.id===id);
+
+  if(!p.toes){
+    p.toes={
+      derecho:{},
+      izquierdo:{}
+    };
+  }
+
+  if(!p.toes[foot]){
+    p.toes[foot]={};
+  }
+
+  p.toes[foot][n]=!p.toes[foot][n];
+
+  save();
+  render();
+}
+
+function savePodograma(id){
+
+  const p=db.patients.find(x=>x.id===id);
+
+  p.podogramaNota=
+    document.getElementById("podonota_"+id).value;
+
+  save();
+
+  alert("Podograma guardado correctamente.");
+
+}
+
+/* =====================================================
+   PACIENTE
+===================================================== */
+
+function addPatient(e){
+
+  e.preventDefault();
+
+  const val=id=>
+    document.getElementById(id)?.value.trim()||"";
+
+  const patient={
+
+    id:"p_"+Date.now(),
+
+    nombre:val("pnombre"),
+    cedula:val("pcedula"),
+    telefono:val("ptel"),
+
+    antecedentes:val("pant"),
+    alergias:val("paler"),
+    medicamentos:val("pmed"),
+    tipoPie:val("ptipo"),
+    notas:val("pnotas"),
+
+    toes:{
+      derecho:{},
+      izquierdo:{}
+    },
+
+    podogramaNota:"",
+
+    photos:[],
+    procedures:[],
+    consents:[],
+    visits:[],
+    payments:[]
+
+  };
+
+  db.patients.push(patient);
+
+  state.selectedId=patient.id;
+  state.search="";
+
+  save();
+
+  alert("Paciente creado correctamente.");
+
+  render();
+}
+
+function selectPatient(id){
+
+  state.selectedId=id;
+
+  render();
+
+}
+
+/* =====================================================
+   FOTOS
+===================================================== */
+
+function takePhoto(id){
+
+  const input=document.createElement("input");
+
+  input.type="file";
+  input.accept="image/*";
+  input.capture="environment";
+
+  input.onchange=()=>{
+
+    if(input.files.length){
+      uploadPhotos(id,input.files);
+    }
+
+  };
+
+  input.click();
+}
+
+function uploadPhotos(id,files){
+
+  const p=db.patients.find(x=>x.id===id);
+
+  if(!p)return;
+
+  const type=
+    document.getElementById("photoType_"+id)?.value
+    ||"Antes";
+
+  [...files].forEach(file=>{
+
+    const reader=new FileReader();
+
+    reader.onload=function(e){
+
+      p.photos.push({
+
+        data:e.target.result,
+
+        type:type,
+
+        date:new Date().toLocaleString("es-CO"),
+
+        name:file.name
+
+      });
+
+      save();
+
+      render();
+
+    };
+
+    reader.readAsDataURL(file);
+
+  });
+
+}
+
+function deletePhoto(id,index){
+
+  if(!confirm("¿Eliminar esta fotografía?"))return;
+
+  const p=db.patients.find(x=>x.id===id);
+
+  p.photos.splice(index,1);
+
+  save();
+
+  render();
+
+}
+
+/* =====================================================
+   PROCEDIMIENTOS
+===================================================== */
+
+function addProcedure(e,id){
+
+  e.preventDefault();
+
+  const p=db.patients.find(x=>x.id===id);
+
+  const name=
+    document.getElementById("procedure_"+id).value;
+
+  const date=
+    document.getElementById("procedureDate_"+id).value;
+
+  const notes=
+    document.getElementById("procedureNotes_"+id).value;
+
+  p.procedures.push({
+    name,
+    date,
+    notes
+  });
+
+  p.visits.push({
+    date,
+    service:name,
+    attendance:"Atendida"
+  });
+
+  save();
+
+  alert("Procedimiento guardado.");
+
+  render();
+
+}
+
+/* =====================================================
+   CITAS
+===================================================== */
+
+function appointmentsPage(){
+
+  return `
+
+    <h2 class="title">
+      Agendamiento de Citas
+    </h2>
+
+    <div class="card">
+
+      <h3>📅 Agendar cita</h3>
+
+      <form
+        class="grid"
+        onsubmit="addAppointment(event)"
+      >
+
+        <select class="input" id="appointmentPatient" required>
+
+          ${
+            db.patients.map(p=>
+              `<option value="${p.id}">
+                ${esc(p.nombre)}
+              </option>`
+            ).join("")
+          }
+
+        </select>
+
+        <input
+          class="input"
+          id="appointmentDate"
+          type="date"
+          required
+        >
+
+        <input
+          class="input"
+          id="appointmentTime"
+          type="time"
+          required
+        >
+
+        <select
+          class="input"
+          id="appointmentService"
+        >
+
+          <option>Uña encarnada</option>
+          <option>Pedicure medicado</option>
+          <option>Onicomicosis</option>
+          <option>Plantillas ortopédicas</option>
+          <option>Callos y clavos</option>
+          <option>Verruga plantar</option>
+
+        </select>
+
+        <button class="primary full">
+          Guardar cita
+        </button>
+
+      </form>
+
+    </div>
+
+    <div class="card">
+
+      <h3>📅 Próximas citas</h3>
+
+      ${
+        db.appointments.length
+        ?
+        db.appointments.map((a,i)=>{
+
+          const p=db.patients.find(
+            x=>x.id===a.patientId
+          );
+
+          return `
+
+            <div class="item">
+
+              <div>
+
+                <b>${esc(p?.nombre||"Paciente")}</b>
+
+                <br>
+
+                <span class="muted">
+                  ${esc(a.date)}
+                  · ${esc(a.time)}
+                  · ${esc(a.service)}
+                </span>
+
+              </div>
+
+              <button
+                class="primary"
+                onclick="sendWhatsApp(${i})"
+              >
+                📱 WhatsApp
+              </button>
+
+            </div>
+
+          `;
+
+        }).join("")
+        :
+        `<p class="muted">
+          No hay citas registradas.
+        </p>`
+      }
+
+    </div>
+
+  `;
+}
+
+function addAppointment(e){
+
+  e.preventDefault();
+
+  const patientId=
+    document.getElementById("appointmentPatient").value;
+
+  const date=
+    document.getElementById("appointmentDate").value;
+
+  const time=
+    document.getElementById("appointmentTime").value;
+
+  const service=
+    document.getElementById("appointmentService").value;
+
+  db.appointments.push({
+    patientId,
+    date,
+    time,
+    service
+  });
+
+  const p=db.patients.find(x=>x.id===patientId);
+
+  p.visits.push({
+    date,
+    service,
+    attendance:"Pendiente"
+  });
+
+  save();
+
+  alert("Cita guardada correctamente.");
+
+  render();
+
+}
+
+function sendWhatsApp(index){
+
+  const a=db.appointments[index];
+
+  const p=db.patients.find(
+    x=>x.id===a.patientId
+  );
+
+  if(!p)return;
+
+  let phone=p.telefono.replace(/\D/g,"");
+
+  if(phone.length===10){
+    phone="57"+phone;
+  }
+
+  const message=
+    `Hola ${p.nombre}, confirmamos tu cita en Feetsalud para el ${a.date} a las ${a.time}. Procedimiento: ${a.service}. Por favor confirma tu asistencia.`;
+
+  window.open(
+    "https://wa.me/"+phone+
+    "?text="+encodeURIComponent(message),
+    "_blank"
+  );
+
+}
+
+/* =====================================================
+   PAGOS
+===================================================== */
+
+function paymentsPage(){
+
+  const today=
+    new Date().toISOString().slice(0,10);
+
+  const allPayments=
+    db.patients.flatMap(p=>
+      p.payments.map(x=>({
+        ...x,
+        patient:p.nombre
+      }))
+    );
+
+  const totalToday=
+    allPayments
+      .filter(x=>x.date===today)
+      .reduce(
+        (sum,x)=>sum+Number(x.amount),
+        0
+      );
+
+  return `
+
+    <h2 class="title">
+      Contabilidad y Caja
+    </h2>
+
+    <div class="card">
+
+      <h3>💰 Registrar pago</h3>
+
+      <form
+        class="grid"
+        onsubmit="addPayment(event)"
+      >
+
+        <select
+          class="input"
+          id="paymentPatient"
+          required
+        >
+
+          ${
+            db.patients.map(p=>
+              `<option value="${p.id}">
+                ${esc(p.nombre)}
+              </option>`
+            ).join("")
+          }
+
+        </select>
+
+        <input
+          class="input"
+          id="paymentConcept"
+          placeholder="Concepto"
+          required
+        >
+
+        <input
+          class="input"
+          id="paymentAmount"
+          type="number"
+          placeholder="Monto"
+          required
+        >
+
+        <select
+          class="input"
+          id="paymentMethod"
+        >
+
+          <option>Efectivo</option>
+          <option>Transferencia / Nequi / Daviplata</option>
+          <option>Tarjeta</option>
+
+        </select>
+
+        <button class="primary full">
+          💾 Registrar pago
+        </button>
+
+      </form>
+
+    </div>
+
+    <div class="card">
+
+      <h3>Ventas del día</h3>
+
+      <h2 style="color:#0d9488">
+        $${totalToday.toLocaleString("es-CO")}
+      </h2>
+
+      ${
+        allPayments.map(x=>`
+
+          <div class="item">
+
+            <div>
+
+              <b>${esc(x.patient)}</b>
+
+              <br>
+
+              ${esc(x.concept)}
+
+              <br>
+
+              <span class="muted">
+                ${esc(x.date)}
+                · ${esc(x.method)}
+              </span>
+
+            </div>
+
+            <b>
+              $${Number(x.amount)
+                .toLocaleString("es-CO")}
+            </b>
+
+          </div>
+
+        `).join("")
+      }
+
+    </div>
+
+  `;
+}
+
+function addPayment(e){
+
+  e.preventDefault();
+
+  const patientId=
+    document.getElementById("paymentPatient").value;
+
+  const p=db.patients.find(
+    x=>x.id===patientId
+  );
+
+  p.payments.push({
+
+    concept:
+      document.getElementById("paymentConcept").value,
+
+    amount:
+      Number(
+        document.getElementById("paymentAmount").value
+      ),
+
+    method:
+      document.getElementById("paymentMethod").value,
+
+    date:
+      new Date().toISOString().slice(0,10)
+
+  });
+
+  save();
+
+  alert("Pago registrado.");
+
+  render();
+
+}
+
+/* =====================================================
+   CONSENTIMIENTO INFORMADO
+===================================================== */
+
+function consentPage(){
+
+  return `
+
+    <h2 class="title">
+      Consentimiento Informado Digital
+    </h2>
+
+    <div class="card">
+
+      <h3>
+        📄 Consentimiento informado
+      </h3>
+
+      <label>
+        Paciente
+      </label>
+
+      <select
+        class="input"
+        id="consentPatient"
+        onchange="updateConsent()"
+      >
+
+        ${
+          db.patients.map(p=>
+            `<option value="${p.id}">
+              ${esc(p.nombre)}
+              - C.C. ${esc(p.cedula)}
+            </option>`
+          ).join("")
+        }
+
+      </select>
+
+      <br><br>
+
+      <label>
+        Procedimiento que se va a realizar
+      </label>
+
+      <select
+        class="input"
+        id="consentProcedure"
+        onchange="updateConsent()"
+      >
+
+        ${
+          Object.keys(procedures).map(x=>
+            `<option>${esc(x)}</option>`
+          ).join("")
+        }
+
+      </select>
+
+      <div
+        id="consentText"
+        class="consent"
+        style="margin-top:18px"
+      ></div>
+
+      <br>
+
+      <label>
+        <input
+          type="checkbox"
+          id="consentAccept"
+        >
+
+        Yo, el paciente, manifiesto que recibí información clara sobre el procedimiento, sus riesgos, cuidados y recomendaciones, tuve la oportunidad de realizar preguntas y acepto voluntariamente la realización del procedimiento.
+      </label>
+
+      <br><br>
+
+      <p>
+        <b>Firma electrónica del paciente</b>
+      </p>
+
+      <canvas
+        id="signatureCanvas"
+        class="signature"
+      ></canvas>
+
+      <div style="display:flex;gap:10px;margin-top:10px">
+
+        <button
+          class="secondary"
+          onclick="clearSignature()"
+        >
+          Borrar firma
+        </button>
+
+        <button
+          class="primary"
+          onclick="saveConsent()"
+        >
+          ✍️ Guardar consentimiento firmado
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+function updateConsent(){
+
+  const patientId=
+    document.getElementById("consentPatient").value;
+
+  const procedure=
+    document.getElementById("consentProcedure").value;
+
+  const p=db.patients.find(
+    x=>x.id===patientId
+  );
+
+  const d=procedures[procedure];
+
+  document.getElementById("consentText").innerHTML=`
+
+    <h3 style="color:#134e4a">
+      CONSENTIMIENTO INFORMADO
+    </h3>
+
+    <p>
+      Yo,
+      <b>${esc(p.nombre)}</b>,
+      identificado(a) con documento No.
+      <b>${esc(p.cedula)}</b>,
+      manifiesto que he recibido información clara y comprensible sobre el procedimiento que se me realizará.
+    </p>
+
+    <p>
+      <b>Procedimiento:</b>
+      ${esc(procedure)}
+    </p>
+
+    <p>
+      <b>Riesgos que me fueron explicados:</b>
+      ${esc(d.risk)}
+    </p>
+
+    <p>
+      <b>Cuidados posteriores:</b>
+      ${esc(d.care)}
+    </p>
+
+    <p>
+      Declaro que tuve la oportunidad de realizar preguntas y que recibí explicaciones sobre los beneficios, riesgos y cuidados relacionados con el procedimiento.
+    </p>
+
+    <p>
+      Declaro que la información que proporcioné sobre mi estado de salud es verdadera y completa.
+    </p>
+
+    <p>
+      Acepto voluntariamente la realización del procedimiento y me comprometo a seguir las recomendaciones y cuidados indicados por Feetsalud.
+    </p>
+
+    <p>
+      <b>Fecha:</b>
+      ${new Date().toLocaleDateString("es-CO")}
+    </p>
+
+  `;
+
+}
+
+/* =====================================================
+   FIRMA ELECTRÓNICA
+===================================================== */
+
+let drawing=false;
+
+function initConsent(){
+
+  updateConsent();
+
+  const canvas=
+    document.getElementById("signatureCanvas");
+
+  if(!canvas)return;
+
+  const ratio=
+    Math.max(window.devicePixelRatio||1,1);
+
+  canvas.width=
+    canvas.clientWidth*ratio;
+
+  canvas.height=
+    canvas.clientHeight*ratio;
+
+  const ctx=canvas.getContext("2d");
+
+  ctx.scale(ratio,ratio);
+
+  ctx.lineWidth=2.2;
+  ctx.lineCap="round";
+  ctx.lineJoin="round";
+
+  function position(e){
+
+    const rect=
+      canvas.getBoundingClientRect();
+
+    return {
+      x:e.clientX-rect.left,
+      y:e.clientY-rect.top
+    };
+
+  }
+
+  canvas.onpointerdown=function(e){
+
+    drawing=true;
+
+    canvas.setPointerCapture(e.pointerId);
+
+    const p=position(e);
+
+    ctx.beginPath();
+    ctx.moveTo(p.x,p.y);
+
+  };
+
+  canvas.onpointermove=function(e){
+
+    if(!drawing)return;
+
+    const p=position(e);
+
+    ctx.lineTo(p.x,p.y);
+    ctx.stroke();
+
+  };
+
+  canvas.onpointerup=function(){
+
+    drawing=false;
+
+  };
+
+  canvas.onpointercancel=function(){
+
+    drawing=false;
+
+  };
+
+}
+
+function clearSignature(){
+
+  const canvas=
+    document.getElementById("signatureCanvas");
+
+  if(!canvas)return;
+
+  const ctx=canvas.getContext("2d");
+
+  ctx.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+}
+
+function signatureHasInk(canvas){
+
+  const ctx=canvas.getContext("2d");
+
+  const data=ctx.getImageData(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  ).data;
+
+  for(let i=3;i<data.length;i+=4){
+
+    if(data[i]>0)return true;
+
+  }
+
+  return false;
+
+}
+
+function saveConsent(){
+
+  const patientId=
+    document.getElementById("consentPatient").value;
+
+  const procedure=
+    document.getElementById("consentProcedure").value;
+
+  const accepted=
+    document.getElementById("consentAccept").checked;
+
+  const canvas=
+    document.getElementById("signatureCanvas");
+
+  if(!accepted){
+
+    alert(
+      "El paciente debe aceptar los términos del consentimiento."
+    );
+
+    return;
+
+  }
+
+  if(!signatureHasInk(canvas)){
+
+    alert(
+      "El paciente debe realizar su firma electrónica."
+    );
+
+    return;
+
+  }
+
+  const p=db.patients.find(
+    x=>x.id===patientId
+  );
+
+  p.consents.push({
+
+    procedure,
+
+    date:
+      new Date().toLocaleString("es-CO"),
+
+    signature:
+      canvas.toDataURL("image/png")
+
+  });
+
+  save();
+
+  alert(
+    "Consentimiento firmado y guardado correctamente en el expediente del paciente."
+  );
+
+  state.selectedId=p.id;
+  state.tab="patients";
+
+  render();
+
+}
+
+/* =====================================================
+   VER CONSENTIMIENTO
+===================================================== */
+
+function viewConsent(id,index){
+
+  const p=db.patients.find(x=>x.id===id);
+
+  const c=p.consents[index];
+
+  const w=window.open(
+    "",
+    "_blank"
+  );
+
+  w.document.write(`
+
+    <!DOCTYPE html>
+
+    <html lang="es">
+
+    <head>
+
+      <meta charset="UTF-8">
+
+      <title>Consentimiento - Feetsalud</title>
+
+      <style>
+
+        body{
+          font-family:Arial;
+          padding:30px;
+          line-height:1.6
+        }
+
+        .box{
+          border:1px solid #ccc;
+          padding:20px;
+          border-radius:10px
+        }
+
+        img{
+          max-width:400px;
+          border:1px solid #999;
+          display:block;
+          margin-top:20px
+        }
+
+        button{
+          padding:10px 15px;
+          margin-top:20px
+        }
+
+      </style>
+
+    </head>
+
+    <body>
+
+      <h1>Feetsalud</h1>
+
       <h2>Consentimiento Informado</h2>
-      <p style="font-size:0.85rem; margin-bottom:10px;">Firma de autorización del paciente para procedimientos podológicos.</p>
-      <button class="btn">Generar Consentimiento</button>
-    </section>
 
-    <!-- SECCIÓN: CITAS -->
-    <section id="citas" class="section-card">
-      <h2>Agendamiento de Citas</h2>
-      <div class="form-group">
-        <label>Fecha y Hora:</label>
-        <input type="datetime-local">
+      <div class="box">
+
+        <p>
+          <b>Paciente:</b>
+          ${esc(p.nombre)}
+        </p>
+
+        <p>
+          <b>Documento:</b>
+          ${esc(p.cedula)}
+        </p>
+
+        <p>
+          <b>Procedimiento:</b>
+          ${esc(c.procedure)}
+        </p>
+
+        <p>
+          <b>Fecha:</b>
+          ${esc(c.date)}
+        </p>
+
+        <p>
+          Declaro que recibí información sobre el procedimiento, riesgos, cuidados posteriores y recomendaciones, y que acepté voluntariamente su realización.
+        </p>
+
+        <p>
+          <b>Firma electrónica del paciente:</b>
+        </p>
+
+        <img src="${c.signature}">
+
       </div>
-      <button class="btn">Enviar Recordatorio WhatsApp</button>
-    </section>
 
-    <!-- SECCIÓN: VENTAS Y CAJA -->
-    <section id="ventas" class="section-card">
-      <h2>Control de Ventas y Caja</h2>
-      <div class="form-group">
-        <label>Servicio o Producto:</label>
-        <input type="text" placeholder="Ej: Quiropodia General / Plantillas">
+      <button onclick="window.print()">
+        Imprimir / Guardar como PDF
+      </button>
+
+    </body>
+
+    </html>
+
+  `);
+
+  w.document.close();
+
+}
+
+/* =====================================================
+   PODOGRAMA GENERAL
+===================================================== */
+
+function podogramaPage(){
+
+  const p=
+    db.patients.find(
+      x=>x.id===state.selectedId
+    );
+
+  if(!p){
+
+    return `
+
+      <h2 class="title">
+        Podograma
+      </h2>
+
+      <div class="card">
+
+        <p>
+          Primero busca y abre un paciente desde
+          <b>Pacientes</b>.
+        </p>
+
+        <button
+          class="primary"
+          onclick="go('patients')"
+        >
+          Ir a pacientes
+        </button>
+
       </div>
-      <div class="form-group">
-        <label>Monto ($):</label>
-        <input type="number" placeholder="0.00">
+
+    `;
+
+  }
+
+  return `
+
+    <h2 class="title">
+      Podograma de ${esc(p.nombre)}
+    </h2>
+
+    <div class="card">
+
+      <h3>👣 Pie derecho</h3>
+
+      <div class="footgrid">
+        ${toeButtons(p,"derecho")}
       </div>
-      <button class="btn">Registrar Ingreso</button>
-    </section>
 
-    <!-- SECCIÓN: RESPALDO DE DATOS -->
-    <section id="respaldo" class="section-card">
-      <h2>Respaldo de Datos</h2>
-      <p style="font-size:0.85rem; margin-bottom:10px;">Exporta tus registros locales a formato JSON.</p>
-      <button class="btn">Descargar Copia de Seguridad</button>
-    </section>
+      <br>
 
-  </main>
+      <h3>👣 Pie izquierdo</h3>
 
-  <script>
-    // Alternar menú desplegable superior
-    function toggleMenu() {
-      const menu = document.getElementById('navMenu');
-      menu.classList.toggle('active');
-    }
+      <div class="footgrid">
+        ${toeButtons(p,"izquierdo")}
+      </div>
 
-    // Cambiar de sección activa y cerrar el menú
-    function showSection(sectionId) {
-      const sections = document.querySelectorAll('.section-card');
-      sections.forEach(sec => sec.classList.remove('active'));
+      <br>
 
-      const target = document.getElementById(sectionId);
-      if (target) {
-        target.classList.add('active');
-      }
+      <textarea
+        class="input"
+        id="generalPodograma"
+        rows="5"
+        placeholder="Observaciones..."
+      >${esc(p.podogramaNota||"")}</textarea>
 
-      // Ocultar menú tras hacer clic
-      document.getElementById('navMenu').classList.remove('active');
-    }
+      <br><br>
 
-    // Cargar y mostrar fotos del tratamiento en la historia clínica
-    function addPodologyImage() {
-      const fileInput = document.getElementById('photoFile');
-      const typeSelect = document.getElementById('photoType');
-      const gallery = document.getElementById('photoGallery');
+      <button
+        class="primary"
+        onclick="saveGeneralPodograma('${p.id}')"
+      >
+        Guardar Podograma
+      </button>
 
-      if (!fileInput.files || !fileInput.files[0]) {
-        alert('Por favor selecciona una imagen primero.');
-        return;
-      }
+    </div>
 
-      const file = fileInput.files[0];
-      const reader = new FileReader();
+  `;
 
-      reader.onload = function (e) {
-        const imageSrc = e.target.result;
-        const typeValue = typeSelect.value;
-        const currentDate = new Date().toLocaleDateString();
+}
 
-        let tagClass = 'tag-evolucion';
-        if (typeValue === 'Antes') tagClass = 'tag-antes';
-        if (typeValue === 'Después') tagClass = 'tag-despues';
+function saveGeneralPodograma(id){
 
-        const item = document.createElement('div');
-        item.className = 'photo-item';
+  const p=db.patients.find(
+    x=>x.id===id
+  );
 
-        item.innerHTML = `
-          <img src="${imageSrc}" alt="Foto Podológica">
-          <div class="photo-tag ${tagClass}">${typeValue}</div>
-          <div class="photo-date">${currentDate}</div>
-        `;
+  p.podogramaNota=
+    document.getElementById("generalPodograma").value;
 
-        gallery.appendChild(item);
-        fileInput.value = '';
-      };
+  save();
 
-      reader.readAsDataURL(file);
-    }
-  </script>
+  alert("Podograma guardado.");
+
+}
+
+/* =====================================================
+   RESPALDO
+===================================================== */
+
+function backupPage(){
+
+  return `
+
+    <h2 class="title">
+      Respaldo de Datos
+    </h2>
+
+    <div class="card">
+
+      <h3>💾 Copia de seguridad</h3>
+
+      <p class="muted">
+        Puedes descargar todos los pacientes, fotografías,
+        procedimientos, consentimientos, citas y pagos
+        almacenados en esta versión demo.
+      </p>
+
+      <button
+        class="primary"
+        onclick="downloadBackup()"
+      >
+        ⬇️ Descargar copia de seguridad
+      </button>
+
+      <br><br>
+
+      <button
+        class="danger"
+        onclick="clearAllData()"
+      >
+        ⚠️ Borrar todos los datos
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+function downloadBackup(){
+
+  const data=
+    JSON.stringify(db,null,2);
+
+  const blob=
+    new Blob(
+      [data],
+      {type:"application/json"}
+    );
+
+  const url=
+    URL.createObjectURL(blob);
+
+  const a=
+    document.createElement("a");
+
+  a.href=url;
+
+  a.download=
+    "feetsalud_respaldo_"+
+    new Date().toISOString().slice(0,10)+
+    ".json";
+
+  a.click();
+
+  URL.revokeObjectURL(url);
+
+}
+
+function clearAllData(){
+
+  if(!confirm(
+    "¿Seguro que quieres borrar TODOS los datos? Esta acción no se puede deshacer."
+  ))return;
+
+  localStorage.removeItem(STORAGE_KEY);
+
+  location.reload();
+
+}
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
+render();
+
+</script>
+
 </body>
 </html>
+
 
     
