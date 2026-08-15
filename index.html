@@ -1,338 +1,395 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FeetSalud - Ficha y Consentimiento</title>
-    <style>
-        :root {
-            --primary: #2b6cb0;
-            --secondary: #d69e2e;
-            --bg: #f7fafc;
-            --card-bg: #ffffff;
-            --text: #2d3748;
-        }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
-        }
+      import React, { useState } from 'react';
+import { 
+  UserCheck, Calendar, CreditCard, FileText, UserPlus, 
+  Search, CheckCircle, Clock, Shield, Send, Plus, DollarSign, LogOut, Activity
+} from 'lucide-react';
 
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-        }
+export default function FitSaludApp() {
+  // --- ESTADOS DE LA APLICACIÓN ---
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [activeTab, setActiveTab] = useState('pacientes');
+  const [credentials, setCredentials] = useState({ user: '', password: '' });
+  
+  // Base de datos local (Estado inicial)
+  const [pacientes, setPacientes] = useState([
+    {
+      id: '1',
+      nombre: 'María Rodríguez',
+      cedula: '1018239401',
+      telefono: '573001234567',
+      antecedentes: 'Diabetes Tipo 2, Hipertensión',
+      alergias: 'Penicilina',
+      afecciones: ['Uña encarnada', 'Hongo plantar'],
+      notasHistorial: 'Paciente refiere dolor en primer hálux derecho desde hace 2 semanas.'
+    }
+  ]);
 
-        h1, h2 {
-            color: var(--primary);
-            text-align: center;
-        }
+  const [citas, setCitas] = useState([
+    { id: '101', pacienteId: '1', fecha: '2026-08-20', hora: '10:00', servicio: 'Uña encarnada', estado: 'Confirmada' }
+  ]);
 
-        .header-logo {
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.5rem;
-            color: var(--secondary);
-            margin-bottom: 20px;
-        }
+  const [pagos, setPagos] = useState([
+    { id: 'p1', pacienteId: '1', concepto: 'Tratamiento Onicocriptosis', monto: 80000, fecha: '2026-08-14', metodo: 'Transferencia' }
+  ]);
 
-        .backup-controls {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            background: #edf2f7;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-        }
+  // Estados para Formularios
+  const [nuevoPaciente, setNuevoPaciente] = useState({
+    nombre: '', cedula: '', telefono: '', antecedentes: '', alergias: '', afecciones: [], notasHistorial: ''
+  });
 
-        .btn-backup {
-            background-color: #4a5568;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
+  const [nuevaCita, setNuevaCita] = useState({ pacienteId: '1', fecha: '', hora: '', servicio: 'Pedicure medicado' });
+  const [nuevoPago, setNuevoPago] = useState({ pacienteId: '1', concepto: '', monto: '', metodo: 'Efectivo' });
 
-        .btn-backup:hover {
-            background-color: #2d3748;
-        }
+  // Consentimiento Informado
+  const [consentimiento, setConsentimiento] = useState({
+    pacienteId: '1',
+    procedimiento: 'Tratamiento de Uña Encarnada (Onicocriptosis)',
+    aceptado: false,
+    firma: ''
+  });
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+  // --- MANEJO DE LOGIN ---
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (credentials.user === 'admin' && credentials.password === '1234') {
+      setIsAuthenticated(true);
+    } else {
+      alert('Usuario o contraseña incorrectos (Usa: admin / 1234)');
+    }
+  };
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
+  // --- AGREGAR REGISTROS ---
+  const handleAddPaciente = (e) => {
+    e.preventDefault();
+    const id = (pacientes.length + 1).toString();
+    setPacientes([...pacientes, { ...nuevoPaciente, id }]);
+    setNuevoPaciente({ nombre: '', cedula: '', telefono: '', antecedentes: '', alergias: '', afecciones: [], notasHistorial: '' });
+    alert('Paciente registrado exitosamente');
+  };
 
-        input[type="text"], input[type="tel"], select, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #cbd5e0;
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
+  const handleAddCita = (e) => {
+    e.preventDefault();
+    const id = (citas.length + 101).toString();
+    setCitas([...citas, { ...nuevaCita, id, estado: 'Pendiente' }]);
+    alert('Cita programada exitosamente');
+  };
 
-        /* Selección de Artejos */
-        .artejos-container {
-            display: flex;
-            justify-content: space-around;
-            margin: 15px 0;
-            background: #f8fafc;
-            padding: 15px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-        }
+  const handleAddPago = (e) => {
+    e.preventDefault();
+    const id = 'p' + (pagos.length + 1);
+    setPagos([...pagos, { ...nuevoPago, id, monto: parseFloat(nuevoPago.monto), fecha: new Date().toISOString().split('T')[0] }]);
+    setNuevoPago({ pacienteId: '1', concepto: '', monto: '', metodo: 'Efectivo' });
+    alert('Pago registrado con éxito');
+  };
 
-        .artejo-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
+  // --- INTEGRACIÓN CON WHATSAPP ---
+  const enviarWhatsApp = (cita) => {
+    const paciente = pacientes.find(p => p.id === cita.pacienteId);
+    if (!paciente) return;
+    const mensaje = `Hola ${paciente.nombre}, confirmamos tu cita en *Fit Salud* para el día ${cita.fecha} a las ${cita.hora}. Servicio: ${cita.servicio}. Por favor confirmar asistencia.`;
+    const url = `https://wa.me/${paciente.telefono}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, '_blank');
+  };
 
-        .artejo-item input {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
+  // --- INTERFAZ DE LOGIN ---
+  if (!isAuthenticated) {
+    return (
+      <div style={styles.loginContainer}>
+        <div style={styles.loginCard}>
+          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+            <Activity size={48} color="#0d9488" />
+            <h2 style={{ color: '#134e4a', margin: '10px 0 5px' }}>Fit Salud</h2>
+            <p style={{ color: '#666', fontSize: '14px' }}>Gestión Clínica de Podología</p>
+          </div>
+          <form onSubmit={handleLogin}>
+            <div style={{ marginBottom: '15px' }}>
+              <label style={styles.label}>Usuario</label>
+              <input 
+                type="text" 
+                style={styles.input} 
+                value={credentials.user} 
+                onChange={(e) => setCredentials({...credentials, user: e.target.value})}
+                placeholder="Ingresa 'admin'"
+                required 
+              />
+            </div>
+            <div style={{ marginBottom: '20px' }}>
+              <label style={styles.label}>Contraseña</label>
+              <input 
+                type="password" 
+                style={styles.input} 
+                value={credentials.password} 
+                onChange={(e) => setCredentials({...credentials, password: e.target.value})}
+                placeholder="Ingresa '1234'"
+                required 
+              />
+            </div>
+            <button type="submit" style={styles.btnPrimary}>Iniciar Sesión</button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
-        /* Canvas de Firma */
-        .signature-container {
-            border: 2px dashed #cbd5e0;
-            border-radius: 8px;
-            text-align: center;
-            background: #fafafa;
-            margin-top: 10px;
-        }
+  // --- INTERFAZ PRINCIPAL ---
+  return (
+    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'Segoe UI, sans-serif', backgroundColor: '#f0fdf4' }}>
+      
+      {/* BARRA LATERAL / NAVEGACIÓN */}
+      <div style={styles.sidebar}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '30px' }}>
+          <Activity size={28} color="#5eead4" />
+          <h2 style={{ color: '#fff', fontSize: '20px', margin: 0 }}>Fit Salud</h2>
+        </div>
 
-        canvas {
-            width: 100%;
-            height: 150px;
-            cursor: crosshair;
-        }
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <button style={activeTab === 'pacientes' ? styles.navBtnActive : styles.navBtn} onClick={() => setActiveTab('pacientes')}>
+            <UserCheck size={18} /> Historias Clínicas
+          </button>
+          <button style={activeTab === 'citas' ? styles.navBtnActive : styles.navBtn} onClick={() => setActiveTab('citas')}>
+            <Calendar size={18} /> Agendamiento & WhatsApp
+          </button>
+          <button style={activeTab === 'pagos' ? styles.navBtnActive : styles.navBtn} onClick={() => setActiveTab('pagos')}>
+            <CreditCard size={18} /> Contabilidad & Pagos
+          </button>
+          <button style={activeTab === 'consentimiento' ? styles.navBtnActive : styles.navBtn} onClick={() => setActiveTab('consentimiento')}>
+            <FileText size={18} /> Consentimiento Informado
+          </button>
+        </nav>
 
-        .btn-clear {
-            background: #e53e3e;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            cursor: pointer;
-        }
+        <button style={styles.logoutBtn} onClick={() => setIsAuthenticated(false)}>
+          <LogOut size={16} /> Cerrar Sesión
+        </button>
+      </div>
 
-        .btn-submit {
-            width: 100%;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-        }
+      {/* CONTENIDO PRINCIPAL */}
+      <div style={{ flex: 1, padding: '30px', overflowY: 'auto' }}>
 
-        .btn-submit:hover {
-            background-color: #2b4c7e;
-        }
-    </style>
-</head>
-<body>
+        {/* TAB 1: HISTORIA CLÍNICA */}
+        {activeTab === 'pacientes' && (
+          <div>
+            <h2 style={styles.pageTitle}>Historias Clínicas Podológicas</h2>
+            
+            {/* Formulario nuevo paciente */}
+            <div style={styles.card}>
+              <h3 style={styles.cardTitle}><UserPlus size={20} /> Registrar Nuevo Paciente</h3>
+              <form onSubmit={handleAddPaciente} style={styles.gridForm}>
+                <input style={styles.input} placeholder="Nombre Completo" value={nuevoPaciente.nombre} onChange={e => setNuevoPaciente({...nuevoPaciente, nombre: e.target.value})} required />
+                <input style={styles.input} placeholder="Cédula / Documento" value={nuevoPaciente.cedula} onChange={e => setNuevoPaciente({...nuevoPaciente, cedula: e.target.value})} required />
+                <input style={styles.input} placeholder="Teléfono WhatsApp (Ej: 573001234567)" value={nuevoPaciente.telefono} onChange={e => setNuevoPaciente({...nuevoPaciente, telefono: e.target.value})} required />
+                <input style={styles.input} placeholder="Antecedentes (Diabetes, Hipertensión...)" value={nuevoPaciente.antecedentes} onChange={e => setNuevoPaciente({...nuevoPaciente, antecedentes: e.target.value})} />
+                <input style={styles.input} placeholder="Alergias Conocidas" value={nuevoPaciente.alergias} onChange={e => setNuevoPaciente({...nuevoPaciente, alergias: e.target.value})} />
+                <textarea style={{...styles.input, gridColumn: 'span 2'}} placeholder="Evolución clínica / Observaciones del pie..." value={nuevoPaciente.notasHistorial} onChange={e => setNuevoPaciente({...nuevoPaciente, notasHistorial: e.target.value})} />
+                <button type="submit" style={{...styles.btnPrimary, gridColumn: 'span 2'}}>Guardar Paciente</button>
+              </form>
+            </div>
 
-<div class="container">
-    <div class="header-logo">FeetSalud 👣</div>
+            {/* Lista de pacientes */}
+            <div style={styles.card}>
+              <h3 style={styles.cardTitle}>Pacientes Registrados</h3>
+              {pacientes.map(p => (
+                <div key={p.id} style={styles.itemRow}>
+                  <div>
+                    <h4 style={{ margin: '0 0 5px', color: '#134e4a' }}>{p.nombre} (C.C: {p.cedula})</h4>
+                    <p style={{ margin: 0, fontSize: '13px', color: '#666' }}><strong>Teléfono:</strong> {p.telefono}</p>
+                    <p style={{ margin: 0, fontSize: '13px', color: '#666' }}><strong>Antecedentes:</strong> {p.antecedentes || 'Ninguno'}</p>
+                    <p style={{ margin: '0', fontSize: '13px', color: '#dc2626' }}><strong>Alergias:</strong> {p.alergias || 'Ninguna'}</p>
+                    <p style={{ margin: '5px 0 0', fontSize: '13px', color: '#334155' }}><strong>Historial:</strong> {p.notasHistorial}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-    <!-- Gestión de Copia de Seguridad -->
-    <div class="backup-controls">
-        <button class="btn-backup" onclick="exportarBackup()">📥 Exportar Copia de Seguridad</button>
-        <button class="btn-backup" onclick="document.getElementById('importFile').click()">📤 Importar Copia</button>
-        <input type="file" id="importFile" style="display: none;" accept=".json" onchange="importarBackup(event)">
+        {/* TAB 2: AGENDAMIENTO & WHATSAPP */}
+        {activeTab === 'citas' && (
+          <div>
+            <h2 style={styles.pageTitle}>Control de Citas</h2>
+
+            <div style={styles.card}>
+              <h3 style={styles.cardTitle}><Calendar size={20} /> Agendar Cita Podológica</h3>
+              <form onSubmit={handleAddCita} style={styles.gridForm}>
+                <select style={styles.input} value={nuevaCita.pacienteId} onChange={e => setNuevaCita({...nuevaCita, pacienteId: e.target.value})}>
+                  {pacientes.map(p => <option key={p.id} value={p.id}>{p.nombre}</option>)}
+                </select>
+                <input type="date" style={styles.input} value={nuevaCita.fecha} onChange={e => setNuevaCita({...nuevaCita, fecha: e.target.value})} required />
+                <input type="time" style={styles.input} value={nuevaCita.hora} onChange={e => setNuevaCita({...nuevaCita, hora: e.target.value})} required />
+                <select style={styles.input} value={nuevaCita.servicio} onChange={e => setNuevaCita({...nuevaCita, servicio: e.target.value})}>
+                  <option value="Uña encarnada">Uña encarnada (Onicocriptosis)</option>
+                  <option value="Pedicure medicado">Pedicure Medicado / Profilaxis</option>
+                  <option value="Plantillas ortopédicas">Plantillas Ortopédicas</option>
+                  <option value="Callos y Clavos">Tratamiento de Callos / Clavos</option>
+                  <option value="Hongo plantar">Tratamiento Hongo Plantar</option>
+                </select>
+                <button type="submit" style={{...styles.btnPrimary, gridColumn: 'span 2'}}>Agendar Cita</button>
+              </form>
+            </div>
+
+            <div style={styles.card}>
+              <h3 style={styles.cardTitle}>Próximas Citas</h3>
+              {citas.map(c => {
+                const paciente = pacientes.find(p => p.id === c.pacienteId);
+                return (
+                  <div key={c.id} style={styles.itemRowFlex}>
+                    <div>
+                      <h4 style={{ margin: '0 0 5px', color: '#134e4a' }}>{paciente?.nombre}</h4>
+                      <p style={{ margin: 0, fontSize: '13px', color: '#666' }}>Fecha: {c.fecha} | Hora: {c.hora}</p>
+                      <span style={styles.badge}>{c.servicio}</span>
+                    </div>
+                    <button style={styles.btnWhatsapp} onClick={() => enviarWhatsApp(c)}>
+                      <Send size={14} /> Recordatorio WhatsApp
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: CONTABILIDAD */}
+        {activeTab === 'pagos' && (
+          <div>
+            <h2 style={styles.pageTitle}>Historial de Pagos y Caja</h2>
+
+            <div style={styles.card}>
+              <h3 style={styles.cardTitle}><DollarSign size={20} /> Registrar Cobro</h3>
+              <form onSubmit={handleAddPago} style={styles.gridForm}>
+                <select style={styles.input} value={nuevoPago.pacienteId} onChange={e => setNuevoPago({...nuevoPago, pacienteId: e.target.value})}>
+                  {pacientes.map(p => <option key={p.id} value={p.id}>{p.nombre}</option>)}
+                </select>
+                <input style={styles.input} placeholder="Concepto (Ej: Tratamiento Callos)" value={nuevoPago.concepto} onChange={e => setNuevoPago({...nuevoPago, concepto: e.target.value})} required />
+                <input type="number" style={styles.input} placeholder="Monto ($)" value={nuevoPago.monto} onChange={e => setNuevoPago({...nuevoPago, monto: e.target.value})} required />
+                <select style={styles.input} value={nuevoPago.metodo} onChange={e => setNuevoPago({...nuevoPago, metodo: e.target.value})}>
+                  <option value="Efectivo">Efectivo</option>
+                  <option value="Transferencia">Transferencia / Nequi / Daviplata</option>
+                  <option value="Tarjeta">Tarjeta Débito/Crédito</option>
+                </select>
+                <button type="submit" style={{...styles.btnPrimary, gridColumn: 'span 2'}}>Registrar Pago</button>
+              </form>
+            </div>
+
+            <div style={styles.card}>
+              <h3 style={styles.cardTitle}>Reporte de Ingresos</h3>
+              {pagos.map(p => {
+                const paciente = pacientes.find(pac => pac.id === p.pacienteId);
+                return (
+                  <div key={p.id} style={styles.itemRowFlex}>
+                    <div>
+                      <strong>{paciente?.nombre}</strong> - {p.concepto}
+                      <br />
+                      <small style={{ color: '#666' }}>{p.fecha} | Método: {p.metodo}</small>
+                    </div>
+                    <div style={{ fontWeight: 'bold', color: '#0d9488', fontSize: '18px' }}>
+                      ${p.monto.toLocaleString()}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 4: CONSENTIMIENTO INFORMADO */}
+        {activeTab === 'consentimiento' && (
+          <div>
+            <h2 style={styles.pageTitle}>Consentimiento Informado Digital</h2>
+
+            <div style={styles.card}>
+              <h3 style={styles.cardTitle}><Shield size={20} /> Generar Consentimiento del Paciente</h3>
+              
+              <div style={{ marginBottom: '15px' }}>
+                <label style={styles.label}>Seleccionar Paciente:</label>
+                <select style={styles.input} value={consentimiento.pacienteId} onChange={e => setConsentimiento({...consentimiento, pacienteId: e.target.value})}>
+                  {pacientes.map(p => <option key={p.id} value={p.id}>{p.nombre} - C.C {p.cedula}</option>)}
+                </select>
+              </div>
+
+              <div style={{ marginBottom: '15px' }}>
+                <label style={styles.label}>Procedimiento a Realizar:</label>
+                <select style={styles.input} value={consentimiento.procedimiento} onChange={e => setConsentimiento({...consentimiento, procedimiento: e.target.value})}>
+                  <option value="Tratamiento de Uña Encarnada (Onicocriptosis)">Tratamiento de Uña Encarnada (Onicocriptosis)</option>
+                  <option value="Pedicure Medicado / Profilaxis Podológica">Pedicure Medicado / Profilaxis Podológica</option>
+                  <option value="Espiculotomía / Extracción de clavos y callos">Espiculotomía / Extracción de clavos y callos</option>
+                  <option value="Evaluación y Adaptación de Plantillas">Evaluación y Adaptación de Plantillas</option>
+                </select>
+              </div>
+
+              <div style={styles.consentBox}>
+                <h4 style={{ marginTop: 0, color: '#134e4a' }}>TÉRMINOS DEL PROCEDIMIENTO PODOLÓGICO</h4>
+                <p style={{ fontSize: '13px', lineHeight: '1.5', color: '#334155' }}>
+                  Por medio del presente documento declaro que he sido informado(a) sobre la naturaleza, beneficios y riesgos del procedimiento podológico de <strong>{consentimiento.procedimiento}</strong> en la clínica <strong>Fit Salud</strong>.
+                </p>
+                <p style={{ fontSize: '13px', lineHeight: '1.5', color: '#334155' }}>
+                  <strong>Advertencias y Cuidados Post-Procedimiento:</strong>
+                  <br />- Debo seguir adecuadamente las indicaciones de higiene y curación entregadas por el especialista.
+                  <br />- Comprendo que la no adherencia al tratamiento o falta de asepsia puede generar reinfecciones, inflamación o recurrencia de la lesión.
+                </p>
+
+                <div style={{ marginTop: '15px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', fontWeight: 'bold' }}>
+                    <input 
+                      type="checkbox" 
+                      checked={consentimiento.aceptado} 
+                      onChange={e => setConsentimiento({...consentimiento, aceptado: e.target.checked})} 
+                    />
+                    Acepto los términos y certifico que la información médica provista es verídica.
+                  </label>
+                </div>
+
+                <div style={{ marginTop: '15px' }}>
+                  <label style={styles.label}>Firma Digital del Paciente (Escribe el Nombre Completo como Firma):</label>
+                  <input 
+                    style={styles.input} 
+                    placeholder="Nombre y Firma Digital" 
+                    value={consentimiento.firma}
+                    onChange={e => setConsentimiento({...consentimiento, firma: e.target.value})}
+                  />
+                </div>
+              </div>
+
+              <button 
+                style={{ ...styles.btnPrimary, marginTop: '15px' }}
+                onClick={() => {
+                  if(!consentimiento.aceptado || !consentimiento.firma) {
+                    alert('Debe aceptar los términos y firmar el documento.');
+                  } else {
+                    alert(`Consentimiento guardado con éxito para ${pacientes.find(p => p.id === consentimiento.pacienteId)?.nombre}`);
+                  }
+                }}
+              >
+                Guardar y Validar Consentimiento
+              </button>
+            </div>
+          </div>
+        )}
+
+      </div>
     </div>
+  );
+}
 
-    <h2>Ficha Clínica y Consentimiento</h2>
-
-    <form id="clinicalForm">
-        <!-- Datos del Paciente -->
-        <div class="form-group">
-            <label for="nombre">Nombre Completo:</label>
-            <input type="text" id="nombre" required placeholder="Ej. Ana Pérez">
-        </div>
-
-        <div class="form-group">
-            <label for="telefono">Teléfono / WhatsApp:</label>
-            <input type="tel" id="telefono" required placeholder="Ej. 300 123 4567">
-        </div>
-
-        <!-- Selección de Uñas / Artejos -->
-        <div class="form-group">
-            <label>Artejos Afectados (Uñas):</label>
-            <div class="artejos-container">
-                <div class="artejo-item">
-                    <span>1 (Gordo)</span>
-                    <input type="checkbox" name="artejos" value="Artejo 1">
-                </div>
-                <div class="artejo-item">
-                    <span>2</span>
-                    <input type="checkbox" name="artejos" value="Artejo 2">
-                </div>
-                <div class="artejo-item">
-                    <span>3</span>
-                    <input type="checkbox" name="artejos" value="Artejo 3">
-                </div>
-                <div class="artejo-item">
-                    <span>4</span>
-                    <input type="checkbox" name="artejos" value="Artejo 4">
-                </div>
-                <div class="artejo-item">
-                    <span>5 (Chiquito)</span>
-                    <input type="checkbox" name="artejos" value="Artejo 5">
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="observaciones">Observaciones / Tratamiento:</label>
-            <textarea id="observaciones" rows="3" placeholder="Detalles del procedimiento..."></textarea>
-        </div>
-
-        <!-- Firma Digital -->
-        <div class="form-group">
-            <label>Firma de Consentimiento del Paciente:</label>
-            <div class="signature-container">
-                <canvas id="signaturePad"></canvas>
-                <button type="button" class="btn-clear" onclick="limpiarFirma()">Limpiar Firma</button>
-            </div>
-        </div>
-
-        <button type="submit" class="btn-submit">Guardar Paciente</button>
-    </form>
-</div>
-
-<script>
-    // Configuración del Canvas para la Firma Digital
-    const canvas = document.getElementById('signaturePad');
-    const ctx = canvas.getContext('2d');
-    let dibujando = false;
-
-    function ajustarCanvas() {
-        const rect = canvas.getBoundingClientRect();
-        canvas.width = rect.width;
-        canvas.height = rect.height;
-    }
-    window.addEventListener('resize', ajustarCanvas);
-    ajustarCanvas();
-
-    function obtenerPosicion(e) {
-        const rect = canvas.getBoundingClientRect();
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        return {
-            x: clientX - rect.left,
-            y: clientY - rect.top
-        };
-    }
-
-    canvas.addEventListener('mousedown', (e) => { dibujando = true; ctx.beginPath(); const pos = obtenerPosicion(e); ctx.moveTo(pos.x, pos.y); });
-    canvas.addEventListener('mousemove', (e) => {
-        if (!dibujando) return;
-        const pos = obtenerPosicion(e);
-        ctx.lineTo(pos.x, pos.y);
-        ctx.stroke();
-    });
-    canvas.addEventListener('mouseup', () => dibujando = false);
-
-    // Soporte Táctil para Celular y Tablet
-    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); dibujando = true; ctx.beginPath(); const pos = obtenerPosicion(e); ctx.moveTo(pos.x, pos.y); });
-    canvas.addEventListener('touchmove', (e) => {
-        e.preventDefault();
-        if (!dibujando) return;
-        const pos = obtenerPosicion(e);
-        ctx.lineTo(pos.x, pos.y);
-        ctx.stroke();
-    });
-    canvas.addEventListener('touchend', () => dibujando = false);
-
-    function limpiarFirma() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-
-    // Guardar Información
-    document.getElementById('clinicalForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const artejosSeleccionados = Array.from(document.querySelectorAll('input[name="artejos"]:checked')).map(cb => cb.value);
-        
-        const paciente = {
-            id: Date.now(),
-            nombre: document.getElementById('nombre').value,
-            telefono: document.getElementById('telefono').value,
-            artejos: artejosSeleccionados,
-            observaciones: document.getElementById('observaciones').value,
-            firma: canvas.toDataURL(),
-            fecha: new Date().toLocaleDateString()
-        };
-
-        let pacientes = JSON.parse(localStorage.getItem('pacientes_feetsalud')) || [];
-        pacientes.push(paciente);
-        localStorage.setItem('pacientes_feetsalud', JSON.stringify(pacientes));
-
-        alert('¡Paciente guardado con éxito!');
-        document.getElementById('clinicalForm').reset();
-        limpiarFirma();
-    });
-
-    // 📥 Funciones de Copia de Seguridad (Exportar)
-    function exportarBackup() {
-        const datos = localStorage.getItem('pacientes_feetsalud');
-        if (!datos || datos === "[]") {
-            alert("No hay información guardada para exportar.");
-            return;
-        }
-
-        const blob = new Blob([datos], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Copia_Seguridad_FeetSalud_${new Date().toISOString().slice(0,10)}.json`;
-        a.click();
-        URL.revokeObjectURL(url);
-    }
-
-    // 📤 Funciones de Copia de Seguridad (Importar)
-    function importarBackup(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const contenido = e.target.result;
-                JSON.parse(contenido); // Validar que sea JSON
-                localStorage.setItem('pacientes_feetsalud', contenido);
-                alert("¡Copia de seguridad restaurada con éxito!");
-            } catch (error) {
-                alert("El archivo seleccionado no es válido.");
-            }
-        };
-        reader.readAsText(file);
-    }
-</script>
-
-</body>
-</html>
-
+// --- ESTILOS EN LÍNEA (Clean & Modern CSS-in-JS) ---
+const styles = {
+  loginContainer: { display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#ccfbf1' },
+  loginCard: { backgroundColor: '#fff', padding: '40px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)', width: '320px' },
+  sidebar: { width: '250px', backgroundColor: '#134e4a', color: '#fff', padding: '25px 15px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' },
+  navBtn: { display: 'flex', alignItems: 'center', gap: '10px', width: '100%', padding: '12px', border: 'none', backgroundColor: 'transparent', color: '#a7f3d0', borderRadius: '8px', cursor: 'pointer', textAlign: 'left' },
+  navBtnActive: { display: 'flex', alignItems: 'center', gap: '10px', width: '100%', padding: '12px', border: 'none', backgroundColor: '#0d9488', color: '#fff', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', textAlign: 'left' },
+  logoutBtn: { display: 'flex', alignItems: 'center', gap: '8px', padding: '10px', backgroundColor: '#dc2626', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', marginTop: 'auto' },
+  pageTitle: { color: '#134e4a', marginTop: 0, marginBottom: '20px' },
+  card: { backgroundColor: '#fff', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', marginBottom: '20px' },
+  cardTitle: { margin: '0 0 15px', color: '#0d9488', display: 'flex', alignItems: 'center', gap: '8px' },
+  gridForm: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' },
+  input: { padding: '10px', border: '1px solid #cbd5e1', borderRadius: '6px', fontSize: '14px', width: '100%', boxSizing: 'border-box' },
+  label: { fontSize: '12px', fontWeight: 'bold', color: '#475569', display: 'block', marginBottom: '5px' },
+  btnPrimary: { backgroundColor: '#0d9488', color: '#fff', border: 'none', padding: '12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', width: '100%' },
+  btnWhatsapp: { backgroundColor: '#25D366', color: '#fff', border: 'none', padding: '8px 12px', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 'bold' },
+  itemRow: { padding: '12px', borderBottom: '1px solid #e2e8f0' },
+  itemRowFlex: { padding: '12px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
+  badge: { display: 'inline-block', backgroundColor: '#e0f2fe', color: '#0369a1', padding: '3px 8px', borderRadius: '12px', fontSize: '11px', marginTop: '4px', fontWeight: 'bold' },
+  consentBox: { backgroundColor: '#f8fafc', padding: '15px', border: '1px solid #e2e8f0', borderRadius: '8px' }
+};
+      
+    
