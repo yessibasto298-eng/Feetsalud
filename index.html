@@ -1,841 +1,499 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Feetsalud Podología</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeetSalud - App de Gestión Podológica</title>
+    <style>
+        :root {
+            --primary: #0d5c63;
+            --primary-dark: #083b40;
+            --accent: #c9a227;
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --border: #cfd8dc;
+        }
 
-<style>
-*{box-sizing:border-box}
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f5f7fb;
-color:#182033
-}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding-bottom: 40px;
+        }
 
-button,input,select,textarea{
-font:inherit
-}
+        /* Encabezado Principal */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--accent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
 
-.login{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-background:linear-gradient(135deg,#155eef,#d9468c);
-padding:20px
-}
+        header h1 {
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+        }
 
-.login-box{
-background:#fff;
-width:100%;
-max-width:390px;
-padding:30px;
-border-radius:22px;
-box-shadow:0 15px 45px #0004;
-text-align:center
-}
+        header span {
+            font-size: 0.85rem;
+            background-color: var(--accent);
+            color: #1a252f;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
 
-.logo{
-width:85px;
-height:85px;
-border-radius:50%;
-margin:auto;
-display:flex;
-align-items:center;
-justify-content:center;
-background:linear-gradient(135deg,#155eef,#d9468c);
-color:#fff;
-font-size:38px;
-font-weight:bold
-}
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
 
-.login-box input{
-width:100%;
-padding:13px;
-margin:15px 0;
-border:1px solid #ccd5e2;
-border-radius:10px
-}
+        /* Secciones / Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
 
-.login-btn{
-width:100%;
-padding:13px;
-border:0;
-border-radius:10px;
-background:#155eef;
-color:#fff;
-font-weight:bold;
-cursor:pointer
-}
+        .card-title {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: bold;
+            border-left: 4px solid var(--primary);
+            padding-left: 10px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
 
-.error{
-display:none;
-color:#c62828;
-margin-top:10px
-}
+        /* Formularios */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+        }
 
-#app{
-display:none
-}
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
 
-header{
-background:linear-gradient(135deg,#155eef,#d9468c);
-color:#fff;
-padding:22px
-}
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
 
-header h1{
-margin:0
-}
+        label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #546e7a;
+            text-transform: uppercase;
+        }
 
-header p{
-margin:6px 0
-}
+        input[type="text"], input[type="date"], input[type="time"], input[type="tel"], select, textarea {
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border 0.2s;
+        }
 
-.logout{
-float:right;
-border:0;
-border-radius:9px;
-padding:9px 13px;
-background:#fff;
-color:#155eef;
-font-weight:bold;
-cursor:pointer
-}
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+        }
 
-nav{
-display:flex;
-gap:8px;
-overflow-x:auto;
-background:#fff;
-padding:10px;
-position:sticky;
-top:0;
-z-index:20;
-border-bottom:1px solid #ddd
-}
+        textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
 
-nav button{
-border:0;
-padding:11px 15px;
-border-radius:9px;
-background:#eef3ff;
-color:#174ea6;
-font-weight:bold;
-cursor:pointer;
-white-space:nowrap
-}
+        /* Checkboxes Personalizados */
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: none;
+            font-weight: normal;
+            color: var(--text);
+            padding: 6px 0;
+        }
 
-nav button.active{
-background:#155eef;
-color:#fff
-}
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
 
-main{
-max-width:1150px;
-margin:auto;
-padding:18px
-}
+        /* Módulo de Fotos */
+        .photo-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
 
-.seccion{
-display:none
-}
+        .photo-box {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            background: #fafbfc;
+        }
 
-.seccion.activa{
-display:block
-}
+        .photo-preview {
+            width: 100%;
+            height: 160px;
+            background: #eef2f5;
+            margin-top: 10px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #78909c;
+            object-fit: cover;
+        }
 
-.card{
-background:#fff;
-border:1px solid #e1e6ef;
-border-radius:16px;
-padding:18px;
-margin-bottom:16px;
-box-shadow:0 3px 15px #00000008
-}
+        /* Cuidados Post-Tratamiento */
+        .care-box {
+            background-color: #fffde7;
+            border: 1px solid #fff59d;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin: 15px 0;
+        }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:14px
-}
+        .care-box h4 {
+            color: #f57f17;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
 
-.grid3{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:14px
-}
+        .care-box ul {
+            padding-left: 20px;
+            font-size: 0.85rem;
+            color: #424242;
+        }
 
-label{
-display:block;
-font-size:13px;
-font-weight:bold;
-margin-bottom:6px
-}
+        .care-box li {
+            margin-bottom: 4px;
+        }
 
-input,select,textarea{
-width:100%;
-padding:11px;
-border:1px solid #ccd5e2;
-border-radius:9px;
-background:#fff
-}
+        /* Área de Firma */
+        .signature-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15px;
+        }
 
-textarea{
-min-height:90px
-}
+        canvas {
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            background-color: #fff;
+            touch-action: none;
+            width: 100%;
+            max-width: 450px;
+            height: 150px;
+        }
 
-.btn{
-border:0;
-border-radius:9px;
-padding:11px 15px;
-font-weight:bold;
-cursor:pointer
-}
+        /* Botones */
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
 
-.azul{background:#155eef;color:#fff}
-.fucsia{background:#d9468c;color:#fff}
-.verde{background:#16834d;color:#fff}
-.rojo{background:#c62828;color:#fff}
-.gris{background:#edf0f4;color:#222}
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
 
-.botones{
-display:flex;
-flex-wrap:wrap;
-gap:8px;
-margin-top:15px
-}
+        .btn-ws {
+            background-color: #25d366;
+            color: white;
+        }
 
-.badge{
-display:inline-block;
-background:#eef3ff;
-color:#174ea6;
-padding:5px 9px;
-border-radius:20px;
-font-size:12px;
-font-weight:bold
-}
+        .btn-ws:hover {
+            background-color: #1ebc57;
+        }
 
-table{
-width:100%;
-border-collapse:collapse
-}
+        .btn-secondary {
+            background-color: #78909c;
+        }
 
-th,td{
-padding:10px;
-border-bottom:1px solid #e1e6ef;
-text-align:left;
-font-size:13px;
-vertical-align:top
-}
+        .btn-secondary:hover {
+            background-color: #546e7a;
+        }
 
-.tabla-wrap{
-overflow-x:auto
-}
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
 
-.consentimiento{
-border:1px solid #dde3eb;
-border-radius:13px;
-padding:17px;
-margin-top:15px
-}
-
-.cuidados{
-background:#fff5fa;
-border-left:4px solid #d9468c;
-padding:13px;
-margin-top:13px
-}
-
-.aviso{
-background:#eef7ff;
-border-left:4px solid #155eef;
-padding:13px;
-margin-top:13px
-}
-
-.pequeno{
-font-size:12px;
-color:#687385
-}
-
-#mensaje{
-display:none;
-position:fixed;
-bottom:18px;
-right:18px;
-background:#182033;
-color:#fff;
-padding:13px 18px;
-border-radius:10px;
-z-index:100
-}
-
-@media(max-width:700px){
-.grid,.grid3{grid-template-columns:1fr}
-main{padding:10px}
-.logout{
-float:none;
-margin-top:10px
-}
-}
-</style>
+        /* Ajustes para Impresión / PDF */
+        @media print {
+            header, .actions, .btn, input[type="file"], .no-print {
+                display: none !important;
+            }
+            body {
+                background: white;
+                padding: 0;
+            }
+            .card {
+                border: none;
+                box-shadow: none;
+                padding: 10px 0;
+                margin-bottom: 10px;
+            }
+            canvas {
+                border: none;
+                border-bottom: 1px solid #000;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- ================= LOGIN ================= -->
-
-<div id="login" class="login">
-
-<div class="login-box">
-
-<div class="logo">F</div>
-
-<h1>Feetsalud</h1>
-
-<p>Sistema de Podología</p>
-
-<p>🔐 Acceso restringido</p>
-
-<input
-id="clave"
-type="password"
-placeholder="Ingrese su clave"
-onkeydown="if(event.key==='Enter')entrar()"
->
-
-<button
-class="login-btn"
-onclick="entrar()">
-INGRESAR
-</button>
-
-<div id="errorClave" class="error">
-Clave incorrecta
-</div>
-
-<p class="pequeno">
-Clave inicial: Feetsalud2026
-</p>
-
-</div>
-</div>
-
-
-<!-- ================= SISTEMA ================= -->
-
-<div id="app">
-
-<header>
-
-<button class="logout" onclick="cerrarSesion()">
-Cerrar sesión
-</button>
-
-<h1>Feetsalud Podología</h1>
-
-<p>
-Pacientes · Agenda · WhatsApp · Consentimientos
-</p>
-
-</header>
-
-
-<nav>
-
-<button class="active" onclick="mostrar('inicio',this)">
-Inicio
-</button>
-
-<button onclick="mostrar('pacientes',this)">
-Pacientes
-</button>
-
-<button onclick="mostrar('agenda',this)">
-Agenda
-</button>
-
-<button onclick="mostrar('consentimientos',this)">
-Consentimientos
-</button>
-
-<button onclick="mostrar('administracion',this)">
-Administración
-</button>
-
-</nav>
-
-
-<main>
-
-
-<!-- ================= INICIO ================= -->
-
-<section id="inicio" class="seccion activa">
-
-<div class="card">
-
-<h2>Panel de Feetsalud</h2>
-
-<div class="grid3">
-
-<div>
-<span class="badge">Pacientes</span>
-<h2 id="totalPacientes">0</h2>
-</div>
-
-<div>
-<span class="badge">Citas</span>
-<h2 id="totalCitas">0</h2>
-</div>
-
-<div>
-<span class="badge">Pendientes</span>
-<h2 id="totalPendientes">0</h2>
-</div>
-
-</div>
-</div>
-
-
-<div class="card">
-
-<h3>Flujo de atención</h3>
-
-<p>
-<strong>1.</strong> Crear paciente.
-</p>
-
-<p>
-<strong>2.</strong> Agendar cita.
-</p>
-
-<p>
-<strong>3.</strong> Enviar confirmación por WhatsApp.
-</p>
-
-<p>
-<strong>4.</strong> Registrar si confirma o no.
-</p>
-
-<p>
-<strong>5.</strong> Seleccionar procedimiento.
-</p>
-
-<p>
-<strong>6.</strong> Mostrar consentimiento específico.
-</p>
-
-<p>
-<strong>7.</strong> Aceptar cuidados y consentimiento.
-</p>
-
-</div>
-
-</section>
-
-
-<!-- ================= PACIENTES ================= -->
-
-<section id="pacientes" class="seccion">
-
-<div class="card">
-
-<h2>Crear paciente</h2>
-
-<input type="hidden" id="pacienteID">
-
-<div class="grid">
-
-<div>
-<label>Nombre completo</label>
-<input id="nombre" placeholder="Nombre del paciente">
-</div>
-
-<div>
-<label>Documento</label>
-<input id="documento" placeholder="Número de documento">
-</div>
-
-<div>
-<label>WhatsApp</label>
-<input id="telefono" placeholder="3001234567">
-</div>
-
-<div>
-<label>Fecha de nacimiento</label>
-<input id="nacimiento" type="date">
-</div>
-
-<div>
-<label>Correo</label>
-<input id="correo" type="email">
-</div>
-
-<div>
-<label>Observaciones</label>
-<input id="observaciones">
-</div>
-
-</div>
-
-<div class="botones">
-
-<button class="btn azul" onclick="guardarPaciente()">
-Guardar paciente
-</button>
-
-<button class="btn gris" onclick="limpiarPaciente()">
-Limpiar
-</button>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>Pacientes registrados</h3>
-
-<div class="tabla-wrap">
-<div id="tablaPacientes"></div>
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ================= AGENDA ================= -->
-
-<section id="agenda" class="seccion">
-
-<div class="card">
-
-<h2>Agendar cita</h2>
-
-<div class="grid">
-
-<div>
-<label>Paciente</label>
-<select id="agendaPaciente"></select>
-</div>
-
-<div>
-<label>Procedimiento</label>
-
-<select
-id="agendaProcedimiento"
-onchange="actualizarPrecioYConsentimiento()">
-</select>
-
-</div>
-
-<div>
-<label>Fecha</label>
-<input id="agendaFecha" type="date">
-</div>
-
-<div>
-<label>Hora</label>
-<input id="agendaHora" type="time">
-</div>
-
-<div>
-<label>Valor</label>
-<input id="agendaValor" type="number">
-</div>
-
-</div>
-
-
-<div class="botones">
-
-<button class="btn azul" onclick="guardarCita()">
-Guardar cita
-</button>
-
-<button class="btn fucsia" onclick="enviarWhatsAppFormulario()">
-📲 Enviar WhatsApp
-</button>
-
-</div>
-
-
-<div class="aviso">
-El mensaje de WhatsApp quedará preparado con el nombre,
-fecha, hora y procedimiento.
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>Consentimiento del procedimiento</h3>
-
-<div id="vistaConsentimiento"></div>
-
-</div>
-
-
-<div class="card">
-
-<h3>Agenda</h3>
-
-<div class="tabla-wrap">
-<div id="tablaAgenda"></div>
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ================= CONSENTIMIENTOS ================= -->
-
-<section id="consentimientos" class="seccion">
-
-<div class="card">
-
-<h2>Consentimiento informado</h2>
-
-<div class="grid">
-
-<div>
-<label>Paciente</label>
-
-<select
-id="consPaciente"
-onchange="mostrarConsentimientoCompleto()">
-</select>
-</div>
-
-<div>
-<label>Procedimiento</label>
-
-<select
-id="consProcedimiento"
-onchange="mostrarConsentimientoCompleto()">
-</select>
-</div>
-
-</div>
-
-<div id="consentimientoCompleto"></div>
-
-</div>
-
-</section>
-
-
-<!-- ================= ADMINISTRACIÓN ================= -->
-
-<section id="administracion" class="seccion">
-
-<div class="card">
-
-<h2>🔐 Administración</h2>
-
-<h3>Cambiar clave</h3>
-
-<label>Clave actual</label>
-<input id="claveActual" type="password">
-
-<br><br>
-
-<label>Nueva clave</label>
-<input id="nuevaClave" type="password">
-
-<br><br>
-
-<label>Confirmar nueva clave</label>
-<input id="confirmarClave" type="password">
-
-<div class="botones">
-
-<button class="btn azul" onclick="cambiarClave()">
-Cambiar clave
-</button>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>Seguridad</h3>
-
-<p>
-La clave
-  <!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Feetsalud</title>
-
-<style>
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f4f6fb;
-}
-
-#login{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(135deg,#155eef,#d9468c);
-}
-
-.caja{
-    background:white;
-    width:90%;
-    max-width:380px;
-    padding:30px;
-    border-radius:20px;
-    text-align:center;
-    box-shadow:0 10px 40px #0005;
-}
-
-.logo{
-    width:80px;
-    height:80px;
-    border-radius:50%;
-    background:linear-gradient(135deg,#155eef,#d9468c);
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin:auto;
-    font-size:35px;
-    font-weight:bold;
-}
-
-input{
-    width:100%;
-    padding:14px;
-    margin:15px 0;
-    box-sizing:border-box;
-    border:1px solid #ccc;
-    border-radius:10px;
-}
-
-button{
-    width:100%;
-    padding:14px;
-    border:0;
-    border-radius:10px;
-    background:#155eef;
-    color:white;
-    font-weight:bold;
-    font-size:16px;
-}
-
-#error{
-    color:red;
-    display:none;
-    margin-top:12px;
-}
-
-#app{
-    display:none;
-    padding:25px;
-}
-
-header{
-    background:linear-gradient(135deg,#155eef,#d9468c);
-    color:white;
-    padding:25px;
-    border-radius:15px;
-}
-
-</style>
-</head>
-
-<body>
-
-<div id="login">
-
-    <div class="caja">
-
-        <div class="logo">F</div>
-
-        <h1>Feetsalud</h1>
-
-        <p>🔐 Acceso al sistema</p>
-
-        <input
-            id="clave"
-            type="password"
-            placeholder="Escribe tu clave"
-        >
-
-        <button onclick="entrar()">
-            INGRESAR
-        </button>
-
-        <div id="error">
-            ❌ Clave incorrecta
+    <header>
+        <div>
+            <h1>FeetSalud</h1>
+            <p style="font-size: 0.85rem; color: #e0f2f1;">Salud en tus pies — Gestión Clínica</p>
+        </div>
+        <span>Demo App v1.0</span>
+    </header>
+
+    <div class="container">
+
+        <!-- MÓDULO 1: AGENDAMIENTO Y WHATSAPP -->
+        <div class="card no-print">
+            <div class="card-title">📅 Agendamiento de Cita y Recordatorio</div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Fecha de Cita</label>
+                    <input type="date" id="agendaFecha">
+                </div>
+                <div class="form-group">
+                    <label>Hora</label>
+                    <input type="time" id="agendaHora">
+                </div>
+            </div>
+            <div style="margin-top: 15px;">
+                <button class="btn btn-ws" onclick="enviarRecordatorioWhatsApp()">
+                    📱 Agendar y Enviar Confirmación por WhatsApp
+                </button>
+            </div>
+        </div>
+
+        <!-- MÓDULO 2: DATOS DEL PACIENTE -->
+        <div class="card">
+            <div class="card-title">1. Datos Personales del Paciente</div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Nombres y Apellidos</label>
+                    <input type="text" id="nombrePaciente" placeholder="Ej: María Lucía Fernández">
+                </div>
+                <div class="form-group">
+                    <label>Cédula de Ciudadanía</label>
+                    <input type="text" id="cedulaPaciente" placeholder="Ej: 1.020.854.990">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono / WhatsApp</label>
+                    <input type="tel" id="telPaciente" placeholder="Ej: 3154892011">
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Nacimiento</label>
+                    <input type="date" id="nacimientoPaciente">
+                </div>
+            </div>
+        </div>
+
+        <!-- MÓDULO 3: ANTECEDENTES MÉDICOS -->
+        <div class="card">
+            <div class="card-title">2. Antecedentes Médicos Podológicos</div>
+            <div class="grid-3">
+                <label class="checkbox-label"><input type="checkbox" class="antecedente"> Diabetes Mellitus</label>
+                <label class="checkbox-label"><input type="checkbox" class="antecedente"> Hipertensión Arterial</label>
+                <label class="checkbox-label"><input type="checkbox" class="antecedente"> Alergias (Yodo/Látex/Otros)</label>
+                <label class="checkbox-label"><input type="checkbox" class="antecedente"> Paciente Anticoagulado</label>
+                <label class="checkbox-label"><input type="checkbox" class="antecedente"> Problemas Circulatorios</label>
+                <label class="checkbox-label"><input type="checkbox" class="antecedente"> Sensibilidad Alterada</label>
+            </div>
+            <div class="form-group" style="margin-top: 12px;">
+                <label>Observaciones o Diagnóstico Inicial</label>
+                <textarea id="observaciones" placeholder="Describa el motivo de consulta o afecciones observadas..."></textarea>
+            </div>
+        </div>
+
+        <!-- MÓDULO 4: REGISTRO FOTOGRÁFICO Y AUTORIZACIÓN -->
+        <div class="card">
+            <div class="card-title">3. Registro Fotográfico (Antes y Después)</div>
+            <div class="photo-container">
+                <div class="photo-box">
+                    <label>Foto "Antes"</label>
+                    <input type="file" accept="image/*" onchange="previewImage(event, 'previewAntes')" class="no-print">
+                    <img id="previewAntes" class="photo-preview" src="" alt="Sin foto antes" style="display:none;">
+                </div>
+                <div class="photo-box">
+                    <label>Foto "Después"</label>
+                    <input type="file" accept="image/*" onchange="previewImage(event, 'previewDespues')" class="no-print">
+                    <img id="previewDespues" class="photo-preview" src="" alt="Sin foto después" style="display:none;">
+                </div>
+            </div>
+            <div style="margin-top: 15px;">
+                <label class="checkbox-label" style="font-weight: bold; color: var(--primary);">
+                    <input type="checkbox" id="authFotos" checked>
+                    AUTORIZACIÓN: Autorizo a FeetSalud a tomar y almacenar fotografías de mis pies con fines exclusivamente clínicos y de seguimiento.
+                </label>
+            </div>
+        </div>
+
+        <!-- MÓDULO 5: CONSENTIMIENTO INFORMADO -->
+        <div class="card">
+            <div class="card-title">4. Consentimiento Informado</div>
+            
+            <label style="margin-bottom: 8px; display: block;">Procedimientos a realizar:</label>
+            <div class="grid-2">
+                <label class="checkbox-label"><input type="checkbox" value="Pedicure Médico" checked> Pedicure Médico / Podológico</label>
+                <label class="checkbox-label"><input type="checkbox" value="Uña Encarnada" checked> Manejo de Uña Encarnada</label>
+                <label class="checkbox-label"><input type="checkbox" value="Callos / Helomas"> Resección de Callo Clavo / Heloma</label>
+                <label class="checkbox-label"><input type="checkbox" value="Callosidades"> Durezas y Callosidades</label>
+                <label class="checkbox-label"><input type="checkbox" value="Tratamiento Hongo"> Tratamiento de Hongo (Onicomicosis)</label>
+                <label class="checkbox-label"><input type="checkbox" value="Plantillas"> Evaluación para Plantillas</label>
+            </div>
+
+            <div style="background: #fafafa; padding: 12px; border: 1px solid #e0e0e0; border-radius: 6px; margin: 15px 0; font-size: 0.85rem; text-align: justify; line-height: 1.4;">
+                <strong>DECLARACIÓN:</strong> Declaro que he recibido información clara sobre el procedimiento podológico a realizar en <strong>FeetSalud</strong>. Comprendo los beneficios, cuidados posteriores y posibles molestias leves temporales.
+            </div>
+
+            <!-- Recomendaciones específicas -->
+            <div class="care-box">
+                <h4>📌 Recomendaciones de Cuidado Post-Tratamiento:</h4>
+                <ul>
+                    <li><strong>Pedicure Médico / Durezas:</strong> Aplicar crema hidratante podológica diariamente y no cortar bordes de uñas en casa.</li>
+                    <li><strong>Uña Encarnada:</strong> Mantener área limpia/seca, usar antiséptico y evitar calzado ajustado por 48 horas.</li>
+                    <li><strong>Tratamiento de Hongo:</strong> Aplicar producto tópico diariamente y desinfectar el calzado con frecuencia.</li>
+                </ul>
+            </div>
+
+            <!-- MÓDULO 6: FIRMA DIGITAL -->
+            <div class="signature-area">
+                <label style="margin-bottom: 8px;">Firma Digital del Paciente</label>
+                <canvas id="signatureCanvas"></canvas>
+                <div style="margin-top: 8px;" class="no-print">
+                    <button class="btn btn-secondary" onclick="clearSignature()" style="padding: 5px 12px; font-size: 0.8rem;">Limpiar Firma</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTONES DE ACCIÓN -->
+        <div class="actions no-print">
+            <button class="btn" onclick="window.print()">
+                🖨️ Guardar o Imprimir en PDF
+            </button>
         </div>
 
     </div>
 
-</div>
+    <script>
+        // --- 1. CONFIGURACIÓN DEL CANVAS DE FIRMA ---
+        const canvas = document.getElementById('signatureCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
 
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#0d5c63';
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-<div id="app">
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
 
-    <header>
+        canvas.addEventListener('mousedown', (e) => { isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); });
+        canvas.addEventListener('mousemove', (e) => { if (isDrawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } });
+        canvas.addEventListener('mouseup', () => isDrawing = false);
 
-        <h1>Feetsalud Podología</h1>
+        canvas.addEventListener('touchstart', (e) => { isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); e.preventDefault(); });
+        canvas.addEventListener('touchmove', (e) => { if (isDrawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } e.preventDefault(); });
+        canvas.addEventListener('touchend', () => isDrawing = false);
 
-        <p>
-            ¡Bienvenida al sistema!
-        </p>
+        function clearSignature() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
 
-    </header>
+        // --- 2. PREVISUALIZACIÓN DE FOTOS ---
+        function previewImage(event, previewId) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById(previewId);
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            if(event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
 
-    <h2>Panel principal</h2>
+        // --- 3. ENVÍO DE RECORDATORIO POR WHATSAPP ---
+        function enviarRecordatorioWhatsApp() {
+            const nombre = document.getElementById('nombrePaciente').value || 'Paciente';
+            const tel = document.getElementById('telPaciente').value;
+            const fecha = document.getElementById('agendaFecha').value;
+            const hora = document.getElementById('agendaHora').value;
 
-    <p>
-        El acceso funciona correctamente.
-    </p>
+            if (!tel) {
+                alert('Por favor ingrese el número de teléfono/WhatsApp del paciente.');
+                return;
+            }
 
-</div>
-
-
-<script>
-
-function entrar(){
-
-    const clave =
-        document.getElementById("clave").value;
-
-    if(clave === "Feetsalud2026"){
-
-        document.getElementById("login").style.display="none";
-
-        document.getElementById("app").style.display="block";
-
-    }else{
-
-        document.getElementById("error").style.display="block";
-
-    }
-
-}
-
-</script>
-
+            const mensaje = `¡Hola ${nombre}! 🦶✨\nTe confirmamos tu cita en *FeetSalud*.\n\n🗓️ *Fecha:* ${fecha || 'Por confirmar'}\n⏰ *Hora:* ${hora || 'Por confirmar'}\n📍 *Lugar:* Consultorio FeetSalud\n\nPor favor responde a este mensaje para confirmar tu asistencia. ¡Te esperamos!`;
+            
+            const numLimpio = tel.replace(/[^0-9]/g, '');
+            const url = `https://api.whatsapp.com/send?phone=${numLimpio}&text=${encodeURIComponent(mensaje)}`;
+            
+            window.open(url, '_blank');
+        }
+    </script>
 </body>
 </html>
