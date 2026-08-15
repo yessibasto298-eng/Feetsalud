@@ -3,497 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FeetSalud - App de Gestión Podológica</title>
+    <title>FeetSalud - Ficha y Consentimiento</title>
     <style>
         :root {
-            --primary: #0d5c63;
-            --primary-dark: #083b40;
-            --accent: #c9a227;
-            --bg: #f4f7f6;
+            --primary: #2b6cb0;
+            --secondary: #d69e2e;
+            --bg: #f7fafc;
             --card-bg: #ffffff;
-            --text: #2c3e50;
-            --border: #cfd8dc;
-        }
-
-        * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            margin: 0;
-            padding: 0;
+            --text: #2d3748;
         }
 
         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            padding-bottom: 40px;
-        }
-
-        /* Encabezado Principal */
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 4px solid var(--accent);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-
-        header h1 {
-            font-size: 1.5rem;
-            letter-spacing: 0.5px;
-        }
-
-        header span {
-            font-size: 0.85rem;
-            background-color: var(--accent);
-            color: #1a252f;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-weight: bold;
+            margin: 0;
+            padding: 20px;
         }
 
         .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
-
-        /* Secciones / Cards */
-        .card {
+            max-width: 700px;
+            margin: 0 auto;
             background: var(--card-bg);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
         }
 
-        .card-title {
-            font-size: 1.1rem;
+        h1, h2 {
             color: var(--primary);
+            text-align: center;
+        }
+
+        .header-logo {
+            text-align: center;
             font-weight: bold;
-            border-left: 4px solid var(--primary);
-            padding-left: 10px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
         }
 
-        /* Formularios */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 15px;
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        .backup-controls {
+            display: flex;
             gap: 10px;
+            justify-content: center;
+            background: #edf2f7;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .btn-backup {
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .btn-backup:hover {
+            background-color: #2d3748;
         }
 
         .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+            margin-bottom: 15px;
         }
 
         label {
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #546e7a;
-            text-transform: uppercase;
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
         }
 
-        input[type="text"], input[type="date"], input[type="time"], input[type="tel"], select, textarea {
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border 0.2s;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--primary);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 70px;
-        }
-
-        /* Checkboxes Personalizados */
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            text-transform: none;
-            font-weight: normal;
-            color: var(--text);
-            padding: 6px 0;
-        }
-
-        .checkbox-label input {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-        }
-
-        /* Módulo de Fotos */
-        .photo-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .photo-box {
-            border: 2px dashed var(--border);
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            background: #fafbfc;
-        }
-
-        .photo-preview {
+        input[type="text"], input[type="tel"], select, textarea {
             width: 100%;
-            height: 160px;
-            background: #eef2f5;
-            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #cbd5e0;
             border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        /* Selección de Artejos */
+        .artejos-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #78909c;
-            object-fit: cover;
-        }
-
-        /* Cuidados Post-Tratamiento */
-        .care-box {
-            background-color: #fffde7;
-            border: 1px solid #fff59d;
-            border-radius: 8px;
-            padding: 12px 15px;
+            justify-content: space-around;
             margin: 15px 0;
+            background: #f8fafc;
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
         }
 
-        .care-box h4 {
-            color: #f57f17;
-            font-size: 0.9rem;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-        }
-
-        .care-box ul {
-            padding-left: 20px;
-            font-size: 0.85rem;
-            color: #424242;
-        }
-
-        .care-box li {
-            margin-bottom: 4px;
-        }
-
-        /* Área de Firma */
-        .signature-area {
+        .artejo-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 15px;
+            gap: 5px;
+        }
+
+        .artejo-item input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        /* Canvas de Firma */
+        .signature-container {
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            text-align: center;
+            background: #fafafa;
+            margin-top: 10px;
         }
 
         canvas {
-            border: 1.5px solid var(--border);
-            border-radius: 6px;
-            background-color: #fff;
-            touch-action: none;
             width: 100%;
-            max-width: 450px;
             height: 150px;
+            cursor: crosshair;
         }
 
-        /* Botones */
-        .btn {
+        .btn-clear {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .btn-submit {
+            width: 100%;
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 12px;
             border-radius: 6px;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn-ws {
-            background-color: #25d366;
-            color: white;
-        }
-
-        .btn-ws:hover {
-            background-color: #1ebc57;
-        }
-
-        .btn-secondary {
-            background-color: #78909c;
-        }
-
-        .btn-secondary:hover {
-            background-color: #546e7a;
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
             margin-top: 20px;
         }
 
-        /* Ajustes para Impresión / PDF */
-        @media print {
-            header, .actions, .btn, input[type="file"], .no-print {
-                display: none !important;
-            }
-            body {
-                background: white;
-                padding: 0;
-            }
-            .card {
-                border: none;
-                box-shadow: none;
-                padding: 10px 0;
-                margin-bottom: 10px;
-            }
-            canvas {
-                border: none;
-                border-bottom: 1px solid #000;
-            }
+        .btn-submit:hover {
+            background-color: #2b4c7e;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div>
-            <h1>FeetSalud</h1>
-            <p style="font-size: 0.85rem; color: #e0f2f1;">Salud en tus pies — Gestión Clínica</p>
-        </div>
-        <span>Demo App v1.0</span>
-    </header>
+<div class="container">
+    <div class="header-logo">FeetSalud 👣</div>
 
-    <div class="container">
-
-        <!-- MÓDULO 1: AGENDAMIENTO Y WHATSAPP -->
-        <div class="card no-print">
-            <div class="card-title">📅 Agendamiento de Cita y Recordatorio</div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Fecha de Cita</label>
-                    <input type="date" id="agendaFecha">
-                </div>
-                <div class="form-group">
-                    <label>Hora</label>
-                    <input type="time" id="agendaHora">
-                </div>
-            </div>
-            <div style="margin-top: 15px;">
-                <button class="btn btn-ws" onclick="enviarRecordatorioWhatsApp()">
-                    📱 Agendar y Enviar Confirmación por WhatsApp
-                </button>
-            </div>
-        </div>
-
-        <!-- MÓDULO 2: DATOS DEL PACIENTE -->
-        <div class="card">
-            <div class="card-title">1. Datos Personales del Paciente</div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Nombres y Apellidos</label>
-                    <input type="text" id="nombrePaciente" placeholder="Ej: María Lucía Fernández">
-                </div>
-                <div class="form-group">
-                    <label>Cédula de Ciudadanía</label>
-                    <input type="text" id="cedulaPaciente" placeholder="Ej: 1.020.854.990">
-                </div>
-                <div class="form-group">
-                    <label>Teléfono / WhatsApp</label>
-                    <input type="tel" id="telPaciente" placeholder="Ej: 3154892011">
-                </div>
-                <div class="form-group">
-                    <label>Fecha de Nacimiento</label>
-                    <input type="date" id="nacimientoPaciente">
-                </div>
-            </div>
-        </div>
-
-        <!-- MÓDULO 3: ANTECEDENTES MÉDICOS -->
-        <div class="card">
-            <div class="card-title">2. Antecedentes Médicos Podológicos</div>
-            <div class="grid-3">
-                <label class="checkbox-label"><input type="checkbox" class="antecedente"> Diabetes Mellitus</label>
-                <label class="checkbox-label"><input type="checkbox" class="antecedente"> Hipertensión Arterial</label>
-                <label class="checkbox-label"><input type="checkbox" class="antecedente"> Alergias (Yodo/Látex/Otros)</label>
-                <label class="checkbox-label"><input type="checkbox" class="antecedente"> Paciente Anticoagulado</label>
-                <label class="checkbox-label"><input type="checkbox" class="antecedente"> Problemas Circulatorios</label>
-                <label class="checkbox-label"><input type="checkbox" class="antecedente"> Sensibilidad Alterada</label>
-            </div>
-            <div class="form-group" style="margin-top: 12px;">
-                <label>Observaciones o Diagnóstico Inicial</label>
-                <textarea id="observaciones" placeholder="Describa el motivo de consulta o afecciones observadas..."></textarea>
-            </div>
-        </div>
-
-        <!-- MÓDULO 4: REGISTRO FOTOGRÁFICO Y AUTORIZACIÓN -->
-        <div class="card">
-            <div class="card-title">3. Registro Fotográfico (Antes y Después)</div>
-            <div class="photo-container">
-                <div class="photo-box">
-                    <label>Foto "Antes"</label>
-                    <input type="file" accept="image/*" onchange="previewImage(event, 'previewAntes')" class="no-print">
-                    <img id="previewAntes" class="photo-preview" src="" alt="Sin foto antes" style="display:none;">
-                </div>
-                <div class="photo-box">
-                    <label>Foto "Después"</label>
-                    <input type="file" accept="image/*" onchange="previewImage(event, 'previewDespues')" class="no-print">
-                    <img id="previewDespues" class="photo-preview" src="" alt="Sin foto después" style="display:none;">
-                </div>
-            </div>
-            <div style="margin-top: 15px;">
-                <label class="checkbox-label" style="font-weight: bold; color: var(--primary);">
-                    <input type="checkbox" id="authFotos" checked>
-                    AUTORIZACIÓN: Autorizo a FeetSalud a tomar y almacenar fotografías de mis pies con fines exclusivamente clínicos y de seguimiento.
-                </label>
-            </div>
-        </div>
-
-        <!-- MÓDULO 5: CONSENTIMIENTO INFORMADO -->
-        <div class="card">
-            <div class="card-title">4. Consentimiento Informado</div>
-            
-            <label style="margin-bottom: 8px; display: block;">Procedimientos a realizar:</label>
-            <div class="grid-2">
-                <label class="checkbox-label"><input type="checkbox" value="Pedicure Médico" checked> Pedicure Médico / Podológico</label>
-                <label class="checkbox-label"><input type="checkbox" value="Uña Encarnada" checked> Manejo de Uña Encarnada</label>
-                <label class="checkbox-label"><input type="checkbox" value="Callos / Helomas"> Resección de Callo Clavo / Heloma</label>
-                <label class="checkbox-label"><input type="checkbox" value="Callosidades"> Durezas y Callosidades</label>
-                <label class="checkbox-label"><input type="checkbox" value="Tratamiento Hongo"> Tratamiento de Hongo (Onicomicosis)</label>
-                <label class="checkbox-label"><input type="checkbox" value="Plantillas"> Evaluación para Plantillas</label>
-            </div>
-
-            <div style="background: #fafafa; padding: 12px; border: 1px solid #e0e0e0; border-radius: 6px; margin: 15px 0; font-size: 0.85rem; text-align: justify; line-height: 1.4;">
-                <strong>DECLARACIÓN:</strong> Declaro que he recibido información clara sobre el procedimiento podológico a realizar en <strong>FeetSalud</strong>. Comprendo los beneficios, cuidados posteriores y posibles molestias leves temporales.
-            </div>
-
-            <!-- Recomendaciones específicas -->
-            <div class="care-box">
-                <h4>📌 Recomendaciones de Cuidado Post-Tratamiento:</h4>
-                <ul>
-                    <li><strong>Pedicure Médico / Durezas:</strong> Aplicar crema hidratante podológica diariamente y no cortar bordes de uñas en casa.</li>
-                    <li><strong>Uña Encarnada:</strong> Mantener área limpia/seca, usar antiséptico y evitar calzado ajustado por 48 horas.</li>
-                    <li><strong>Tratamiento de Hongo:</strong> Aplicar producto tópico diariamente y desinfectar el calzado con frecuencia.</li>
-                </ul>
-            </div>
-
-            <!-- MÓDULO 6: FIRMA DIGITAL -->
-            <div class="signature-area">
-                <label style="margin-bottom: 8px;">Firma Digital del Paciente</label>
-                <canvas id="signatureCanvas"></canvas>
-                <div style="margin-top: 8px;" class="no-print">
-                    <button class="btn btn-secondary" onclick="clearSignature()" style="padding: 5px 12px; font-size: 0.8rem;">Limpiar Firma</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- BOTONES DE ACCIÓN -->
-        <div class="actions no-print">
-            <button class="btn" onclick="window.print()">
-                🖨️ Guardar o Imprimir en PDF
-            </button>
-        </div>
-
+    <!-- Gestión de Copia de Seguridad -->
+    <div class="backup-controls">
+        <button class="btn-backup" onclick="exportarBackup()">📥 Exportar Copia de Seguridad</button>
+        <button class="btn-backup" onclick="document.getElementById('importFile').click()">📤 Importar Copia</button>
+        <input type="file" id="importFile" style="display: none;" accept=".json" onchange="importarBackup(event)">
     </div>
 
-    <script>
-        // --- 1. CONFIGURACIÓN DEL CANVAS DE FIRMA ---
-        const canvas = document.getElementById('signatureCanvas');
-        const ctx = canvas.getContext('2d');
-        let isDrawing = false;
+    <h2>Ficha Clínica y Consentimiento</h2>
 
-        function resizeCanvas() {
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width;
-            canvas.height = rect.height;
-            ctx.lineWidth = 2;
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = '#0d5c63';
+    <form id="clinicalForm">
+        <!-- Datos del Paciente -->
+        <div class="form-group">
+            <label for="nombre">Nombre Completo:</label>
+            <input type="text" id="nombre" required placeholder="Ej. Ana Pérez">
+        </div>
+
+        <div class="form-group">
+            <label for="telefono">Teléfono / WhatsApp:</label>
+            <input type="tel" id="telefono" required placeholder="Ej. 300 123 4567">
+        </div>
+
+        <!-- Selección de Uñas / Artejos -->
+        <div class="form-group">
+            <label>Artejos Afectados (Uñas):</label>
+            <div class="artejos-container">
+                <div class="artejo-item">
+                    <span>1 (Gordo)</span>
+                    <input type="checkbox" name="artejos" value="Artejo 1">
+                </div>
+                <div class="artejo-item">
+                    <span>2</span>
+                    <input type="checkbox" name="artejos" value="Artejo 2">
+                </div>
+                <div class="artejo-item">
+                    <span>3</span>
+                    <input type="checkbox" name="artejos" value="Artejo 3">
+                </div>
+                <div class="artejo-item">
+                    <span>4</span>
+                    <input type="checkbox" name="artejos" value="Artejo 4">
+                </div>
+                <div class="artejo-item">
+                    <span>5 (Chiquito)</span>
+                    <input type="checkbox" name="artejos" value="Artejo 5">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="observaciones">Observaciones / Tratamiento:</label>
+            <textarea id="observaciones" rows="3" placeholder="Detalles del procedimiento..."></textarea>
+        </div>
+
+        <!-- Firma Digital -->
+        <div class="form-group">
+            <label>Firma de Consentimiento del Paciente:</label>
+            <div class="signature-container">
+                <canvas id="signaturePad"></canvas>
+                <button type="button" class="btn-clear" onclick="limpiarFirma()">Limpiar Firma</button>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Guardar Paciente</button>
+    </form>
+</div>
+
+<script>
+    // Configuración del Canvas para la Firma Digital
+    const canvas = document.getElementById('signaturePad');
+    const ctx = canvas.getContext('2d');
+    let dibujando = false;
+
+    function ajustarCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+    }
+    window.addEventListener('resize', ajustarCanvas);
+    ajustarCanvas();
+
+    function obtenerPosicion(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+            x: clientX - rect.left,
+            y: clientY - rect.top
+        };
+    }
+
+    canvas.addEventListener('mousedown', (e) => { dibujando = true; ctx.beginPath(); const pos = obtenerPosicion(e); ctx.moveTo(pos.x, pos.y); });
+    canvas.addEventListener('mousemove', (e) => {
+        if (!dibujando) return;
+        const pos = obtenerPosicion(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+    });
+    canvas.addEventListener('mouseup', () => dibujando = false);
+
+    // Soporte Táctil para Celular y Tablet
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); dibujando = true; ctx.beginPath(); const pos = obtenerPosicion(e); ctx.moveTo(pos.x, pos.y); });
+    canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (!dibujando) return;
+        const pos = obtenerPosicion(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+    });
+    canvas.addEventListener('touchend', () => dibujando = false);
+
+    function limpiarFirma() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Guardar Información
+    document.getElementById('clinicalForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const artejosSeleccionados = Array.from(document.querySelectorAll('input[name="artejos"]:checked')).map(cb => cb.value);
+        
+        const paciente = {
+            id: Date.now(),
+            nombre: document.getElementById('nombre').value,
+            telefono: document.getElementById('telefono').value,
+            artejos: artejosSeleccionados,
+            observaciones: document.getElementById('observaciones').value,
+            firma: canvas.toDataURL(),
+            fecha: new Date().toLocaleDateString()
+        };
+
+        let pacientes = JSON.parse(localStorage.getItem('pacientes_feetsalud')) || [];
+        pacientes.push(paciente);
+        localStorage.setItem('pacientes_feetsalud', JSON.stringify(pacientes));
+
+        alert('¡Paciente guardado con éxito!');
+        document.getElementById('clinicalForm').reset();
+        limpiarFirma();
+    });
+
+    // 📥 Funciones de Copia de Seguridad (Exportar)
+    function exportarBackup() {
+        const datos = localStorage.getItem('pacientes_feetsalud');
+        if (!datos || datos === "[]") {
+            alert("No hay información guardada para exportar.");
+            return;
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
 
-        function getPos(e) {
-            const rect = canvas.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            return { x: clientX - rect.left, y: clientY - rect.top };
-        }
+        const blob = new Blob([datos], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Copia_Seguridad_FeetSalud_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
 
-        canvas.addEventListener('mousedown', (e) => { isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); });
-        canvas.addEventListener('mousemove', (e) => { if (isDrawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } });
-        canvas.addEventListener('mouseup', () => isDrawing = false);
+    // 📤 Funciones de Copia de Seguridad (Importar)
+    function importarBackup(event) {
+        const file = event.target.files[0];
+        if (!file) return;
 
-        canvas.addEventListener('touchstart', (e) => { isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); e.preventDefault(); });
-        canvas.addEventListener('touchmove', (e) => { if (isDrawing) { const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); } e.preventDefault(); });
-        canvas.addEventListener('touchend', () => isDrawing = false);
-
-        function clearSignature() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-
-        // --- 2. PREVISUALIZACIÓN DE FOTOS ---
-        function previewImage(event, previewId) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const output = document.getElementById(previewId);
-                output.src = reader.result;
-                output.style.display = 'block';
-            };
-            if(event.target.files[0]) {
-                reader.readAsDataURL(event.target.files[0]);
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const contenido = e.target.result;
+                JSON.parse(contenido); // Validar que sea JSON
+                localStorage.setItem('pacientes_feetsalud', contenido);
+                alert("¡Copia de seguridad restaurada con éxito!");
+            } catch (error) {
+                alert("El archivo seleccionado no es válido.");
             }
-        }
+        };
+        reader.readAsText(file);
+    }
+</script>
 
-        // --- 3. ENVÍO DE RECORDATORIO POR WHATSAPP ---
-        function enviarRecordatorioWhatsApp() {
-            const nombre = document.getElementById('nombrePaciente').value || 'Paciente';
-            const tel = document.getElementById('telPaciente').value;
-            const fecha = document.getElementById('agendaFecha').value;
-            const hora = document.getElementById('agendaHora').value;
-
-            if (!tel) {
-                alert('Por favor ingrese el número de teléfono/WhatsApp del paciente.');
-                return;
-            }
-
-            const mensaje = `¡Hola ${nombre}! 🦶✨\nTe confirmamos tu cita en *FeetSalud*.\n\n🗓️ *Fecha:* ${fecha || 'Por confirmar'}\n⏰ *Hora:* ${hora || 'Por confirmar'}\n📍 *Lugar:* Consultorio FeetSalud\n\nPor favor responde a este mensaje para confirmar tu asistencia. ¡Te esperamos!`;
-            
-            const numLimpio = tel.replace(/[^0-9]/g, '');
-            const url = `https://api.whatsapp.com/send?phone=${numLimpio}&text=${encodeURIComponent(mensaje)}`;
-            
-            window.open(url, '_blank');
-        }
-    </script>
 </body>
 </html>
+
