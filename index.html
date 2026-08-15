@@ -1,616 +1,388 @@
-
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Feetsalud - Gestión Podológica</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FeetSalud - Aplicación de Podología</title>
+  <style>
+    :root {
+      --primary: #00A896;
+      --secondary: #028090;
+      --bg: #F4F9F9;
+      --text: #333333;
+      --white: #FFFFFF;
+      --border: #CCCCCC;
+    }
 
-<style>
-:root{
- --principal:#086871;
- --oscuro:#06464d;
- --claro:#eaf6f6;
- --dorado:#c49a25;
- --fondo:#f3f7f7;
- --borde:#d6e2e3;
- --blanco:#fff;
- --rojo:#c62828;
- --verde:#2e7d32;
- --gris:#607d8b;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
-*{box-sizing:border-box}
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-body{
- margin:0;
- font-family:Arial,sans-serif;
- background:var(--fondo);
- color:#263238;
-}
+    /* --- BARRA MENÚ DESPLEGABLE SUPERIOR --- */
+    .top-nav {
+      background-color: var(--primary);
+      color: var(--white);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
 
-header{
- background:var(--principal);
- color:white;
- padding:15px;
- display:flex;
- justify-content:space-between;
- align-items:center;
- position:sticky;
- top:0;
- z-index:20;
-}
+    .nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 18px;
+    }
 
-header h1{margin:0; font-size: 22px;}
-header small{opacity:.8}
+    .nav-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
 
-.container{
- max-width:1100px;
- margin:auto;
- padding:15px;
-}
+    .menu-btn {
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
 
-nav{
- display:flex;
- gap:5px;
- overflow-x:auto;
- background:white;
- padding:8px;
- border-bottom:1px solid var(--borde);
- position:sticky;
- top:60px;
- z-index:15;
-}
+    .nav-menu {
+      display: none;
+      flex-direction: column;
+      background-color: var(--secondary);
+      width: 100%;
+    }
 
-nav button{
- border:0;
- padding:10px 14px;
- border-radius:8px;
- background:#edf2f3;
- color:#455a64;
- font-weight:bold;
- white-space:nowrap;
- cursor:pointer;
-}
+    .nav-menu.active {
+      display: flex;
+    }
 
-nav button.active{
- background:var(--principal);
- color:white;
-}
+    .nav-link {
+      padding: 14px 20px;
+      color: var(--white);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      font-weight: 500;
+    }
 
-section{display:none}
-section.active{display:block}
+    .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
 
-.card{
- background:white;
- border:1px solid var(--borde);
- border-radius:12px;
- padding:17px;
- margin:14px 0;
- box-shadow:0 2px 7px #0000000c;
-}
+    /* --- CONTENEDOR PRINCIPAL --- */
+    .content {
+      padding: 15px;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+    }
 
-h2{ color:var(--principal); margin-top:0; font-size:18px; }
-h3{ color:var(--principal); font-size:15px; }
+    .section-card {
+      background: var(--white);
+      padding: 18px;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      display: none;
+    }
 
-label{
- display:block;
- font-size:12px;
- font-weight:bold;
- color:var(--gris);
- margin-bottom:5px;
-}
+    .section-card.active {
+      display: block;
+    }
 
-input,select,textarea{
- width:100%;
- padding:10px;
- border:1px solid var(--borde);
- border-radius:8px;
- margin-bottom:11px;
- font-size:14px;
- box-sizing:border-box;
-}
+    h2 {
+      color: var(--secondary);
+      margin-bottom: 15px;
+      font-size: 1.25rem;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 6px;
+    }
 
-textarea{ min-height:80px; resize:vertical; }
+    .form-group {
+      margin-bottom: 12px;
+    }
 
-.grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-.grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
 
-button{
- border:0;
- border-radius:8px;
- padding:10px 13px;
- background:var(--principal);
- color:white;
- font-weight:bold;
- cursor:pointer;
- margin:3px;
-}
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 9px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
 
-button:hover{opacity:.9}
-.btn-green{background:var(--verde)}
-.btn-red{background:var(--rojo)}
-.btn-gray{background:var(--gris)}
-.btn-gold{background:var(--dorado)}
-.btn-wa{background:#25d366}
+    .btn {
+      background-color: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 11px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: bold;
+      font-size: 0.95rem;
+      margin-top: 5px;
+    }
 
-.patient-selector{
- background:var(--claro);
- border:1px solid #c7e1e2;
- padding:13px;
- border-radius:10px;
- margin-bottom:15px;
-}
+    .btn:hover {
+      background-color: var(--secondary);
+    }
 
-.stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
-.stat{ background:#edf7f7; padding:14px; text-align:center; border-radius:10px; }
-.stat strong{ display:block; color:var(--principal); font-size:22px; margin-bottom:5px; }
+    /* --- MÓDULO ANTES Y DESPUÉS (IMÁGENES CLÍNICAS) --- */
+    .photo-box {
+      border: 1px dashed var(--primary);
+      padding: 15px;
+      border-radius: 6px;
+      background-color: #FAFFFF;
+      margin-top: 15px;
+    }
 
-.record{ background:#fafcfc; border:1px solid var(--borde); padding:11px; border-radius:9px; margin:8px 0; }
-.muted{ color:var(--gris); font-size:12px; }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 12px;
+      margin-top: 15px;
+    }
 
-.feet{ display:grid; grid-template-columns:1fr 1fr; gap:15px; }
-.foot{ background:#fbfdfd; border:1px solid var(--borde); border-radius:12px; padding:13px; }
-.toes{ display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
-.toe{ background:white; color:#455a64; border:1px solid var(--borde); padding:10px 4px; border-radius:8px; text-align:center; cursor:pointer; font-size:12px; }
-.toe.selected{ background:var(--principal); color:white; font-weight:bold; }
+    .photo-item {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--white);
+      text-align: center;
+    }
 
-.photo-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.photo-box{ border:1px dashed #b7c7c9; padding:10px; border-radius:10px; text-align:center; }
-.photo-box img{ width:100%; max-height:200px; object-fit:cover; border-radius:8px; display:none; margin-top:8px; }
+    .photo-item img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      display: block;
+    }
 
-table{ width:100%; border-collapse:collapse; margin-top:10px; }
-th,td{ padding:9px; border-bottom:1px solid #e3eaea; text-align:left; font-size:13px; }
-th{ background:var(--claro); color:var(--principal); }
+    .photo-tag {
+      font-size: 0.75rem;
+      padding: 4px;
+      font-weight: bold;
+      color: var(--white);
+    }
 
-canvas{ width:100%; height:160px; border:1px solid var(--borde); border-radius:8px; background:white; touch-action:none; }
+    .tag-antes { background-color: #E63946; }
+    .tag-despues { background-color: #2A9D8F; }
+    .tag-evolucion { background-color: #E9C46A; color: #333; }
 
-#login{ position:fixed; inset:0; background:linear-gradient(135deg,var(--principal),var(--oscuro)); display:flex; align-items:center; justify-content:center; z-index:100; }
-.login-box{ background:white; width:min(380px,92%); padding:28px; border-radius:17px; text-align:center; box-shadow:0 15px 50px #0005; }
-.logo{ font-size:28px; font-weight:bold; color:var(--principal); margin-bottom:5px; }
-
-@media(max-width:700px){
- .grid,.grid3,.feet,.photo-grid{ grid-template-columns:1fr; }
- .stats{ grid-template-columns:1fr 1fr; }
-}
-</style>
+    .photo-date {
+      font-size: 0.7rem;
+      color: #666;
+      padding: 3px 0 6px 0;
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- LOGIN -->
-<div id="login">
-  <div class="login-box">
-    <div class="logo">Feetsalud</div>
-    <p style="color:#607d8b; font-size:13px; margin-bottom:20px;">Gestión Clínica Podológica</p>
-    <form onsubmit="event.preventDefault(); iniciarSesion();">
-      <input type="text" id="user" placeholder="Usuario (admin)" value="admin" required>
-      <input type="password" id="pass" placeholder="Contraseña (1234)" value="1234" required>
-      <button type="submit" style="width:100%; padding:12px; font-size:15px;">Iniciar Sesión</button>
-    </form>
-  </div>
-</div>
-
-<!-- HEADER -->
-<header>
-  <div>
-    <h1>Feetsalud</h1>
-    <small>Podología Clínica Especializada</small>
-  </div>
-  <button onclick="cerrarSesion()" class="btn-red" style="font-size:12px;">Cerrar Sesión</button>
-</header>
-
-<!-- NAVEGACIÓN -->
-<nav id="menuNav">
-  <button class="active" onclick="verTab('pacientes', this)">👤 Pacientes</button>
-  <button onclick="verTab('historia', this)">📋 Historia Clínica</button>
-  <button onclick="verTab('citas', this)">📅 Citas & WA</button>
-  <button onclick="verTab('ventas', this)">💰 Ventas & Caja</button>
-  <button onclick="verTab('consentimiento', this)">✍️ Consentimiento</button>
-</nav>
-
-<div class="container">
-
-  <!-- SELECTOR GLOBAL DE PACIENTE -->
-  <div class="patient-selector">
-    <label>PACIENTE SELECCIONADO PARA ATENCIÓN:</label>
-    <select id="selectPacienteGlobal" onchange="cambiarPacienteGlobal()">
-      <!-- Se llena dinámicamente -->
-    </select>
-  </div>
-
-  <!-- TAB 1: PACIENTES -->
-  <section id="pacientes" class="active">
-    <div class="card">
-      <h2>👤 Registrar Nuevo Paciente</h2>
-      <form onsubmit="event.preventDefault(); guardarPaciente();">
-        <div class="grid">
-          <input type="text" id="pNombre" placeholder="Nombre completo" required>
-          <input type="text" id="pCedula" placeholder="Cédula / Documento" required>
-        </div>
-        <div class="grid">
-          <input type="tel" id="pTelefono" placeholder="Teléfono WhatsApp (Ej: 573001234567)" required>
-          <input type="text" id="pAntecedentes" placeholder="Antecedentes (Diabetes, Hipertensión...)">
-        </div>
-        <input type="text" id="pAlergias" placeholder="Alergias (Penicilina, Yodo...)">
-        <button type="submit" class="btn-green">💾 Guardar Paciente</button>
-      </form>
+  <!-- BARRA SUPERIOR DESPLEGABLE -->
+  <nav class="top-nav">
+    <div class="nav-header">
+      <span class="nav-title">FeetSalud Podología</span>
+      <button class="menu-btn" onclick="toggleMenu()">&#9776;</button>
     </div>
-
-    <div class="card">
-      <h2>📋 Lista de Pacientes</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Cédula</th>
-            <th>Teléfono</th>
-            <th>Antecedentes</th>
-          </tr>
-        </thead>
-        <tbody id="tablaPacientes"></tbody>
-      </table>
+    <div class="nav-menu" id="navMenu">
+      <a class="nav-link" onclick="showSection('pacientes')">Pacientes</a>
+      <a class="nav-link" onclick="showSection('podograma')">Podograma</a>
+      <a class="nav-link" onclick="showSection('historia')">Historia Clínica</a>
+      <a class="nav-link" onclick="showSection('consentimiento')">Consentimiento Informado</a>
+      <a class="nav-link" onclick="showSection('citas')">Citas</a>
+      <a class="nav-link" onclick="showSection('ventas')">Ventas y Caja</a>
+      <a class="nav-link" onclick="showSection('respaldo')">Respaldo de Datos</a>
     </div>
-  </section>
+  </nav>
 
-  <!-- TAB 2: HISTORIA CLÍNICA -->
-  <section id="historia">
-    <div class="card">
-      <h2>📋 Registro de Evolución Podológica</h2>
-      <label>Afección principal / Motivo de consulta:</label>
-      <input type="text" id="hMotivo" placeholder="Ej: Dolor en primer hálux por uña encarnada">
+  <main class="content">
+
+    <!-- SECCIÓN: PACIENTES -->
+    <section id="pacientes" class="section-card active">
+      <h2>Registro de Paciente</h2>
+      <div class="form-group">
+        <label>Nombre Completo:</label>
+        <input type="text" placeholder="Ej: Maria Lopez">
+      </div>
+      <div class="form-group">
+        <label>Teléfono (WhatsApp):</label>
+        <input type="tel" placeholder="Ej: 3001234567">
+      </div>
+      <button class="btn">Guardar Paciente</button>
+    </section>
+
+    <!-- SECCIÓN: PODOGRAMA -->
+    <section id="podograma" class="section-card">
+      <h2>Podograma / Mapa de Artejos</h2>
+      <p style="font-size:0.9rem; color:#555; margin-bottom:10px;">Marcación de afecciones en dedos y planta del pie.</p>
+      <div class="form-group">
+        <label>Observaciones del Podograma:</label>
+        <textarea rows="3" placeholder="Ej: Onicocriptosis en primer artejo del pie derecho..."></textarea>
+      </div>
+      <button class="btn">Guardar Podograma</button>
+    </section>
+
+    <!-- SECCIÓN: HISTORIA CLÍNICA CON FOTOGRAFÍAS -->
+    <section id="historia" class="section-card">
+      <h2>Historia Clínica</h2>
       
-      <h3>Mapa Podológico (Selección de Dedos):</h3>
-      <div class="feet">
-        <div class="foot">
-          <strong>Pie Izquierdo</strong>
-          <div class="toes" id="toesIzquierdo">
-            <div class="toe" onclick="toggleToe(this, 'I', 'Hálux')">Hálux</div>
-            <div class="toe" onclick="toggleToe(this, 'I', '2do')">2do</div>
-            <div class="toe" onclick="toggleToe(this, 'I', '3ro')">3ro</div>
-            <div class="toe" onclick="toggleToe(this, 'I', '4to')">4to</div>
-            <div class="toe" onclick="toggleToe(this, 'I', '5to')">5to</div>
-          </div>
-        </div>
-        <div class="foot">
-          <strong>Pie Derecho</strong>
-          <div class="toes" id="toesDerecho">
-            <div class="toe" onclick="toggleToe(this, 'D', 'Hálux')">Hálux</div>
-            <div class="toe" onclick="toggleToe(this, 'D', '2do')">2do</div>
-            <div class="toe" onclick="toggleToe(this, 'D', '3ro')">3ro</div>
-            <div class="toe" onclick="toggleToe(this, 'D', '4to')">4to</div>
-            <div class="toe" onclick="toggleToe(this, 'D', '5to')">5to</div>
-          </div>
-        </div>
+      <div class="form-group">
+        <label>Motivo de Consulta:</label>
+        <textarea rows="2" placeholder="Escriba la razón de la consulta..."></textarea>
       </div>
 
-      <label style="margin-top:15px;">Evolución Clínica y Tratamiento Realizado:</label>
-      <textarea id="hNotas" placeholder="Escribe el procedimiento realizado (espiculotomía, resecado, profilaxis...)"></textarea>
+      <div class="form-group">
+        <label>Tratamiento / Procedimiento Realizado:</label>
+        <textarea rows="2" placeholder="Detalles de la quiropodia o procedimiento..."></textarea>
+      </div>
 
-      <button onclick="guardarHistoria()" class="btn-green">💾 Guardar en Historia Clínica</button>
-    </div>
-
-    <div class="card">
-      <h2>📜 Historial Médico del Paciente</h2>
-      <div id="listaHistorial"></div>
-    </div>
-  </section>
-
-  <!-- TAB 3: CITAS & WHATSAPP -->
-  <section id="citas">
-    <div class="card">
-      <h2>📅 Agendar Cita</h2>
-      <form onsubmit="event.preventDefault(); guardarCita();">
-        <div class="grid">
-          <input type="date" id="cFecha" required>
-          <input type="time" id="cHora" required>
-        </div>
-        <select id="cServicio">
-          <option>Pedicure medicado</option>
-          <option>Uña encarnada (Onicocriptosis)</option>
-          <option>Onicomicosis</option>
-          <option>Fenolización</option>
-          <option>Plantillas ortopédicas</option>
-        </select>
-        <button type="submit" class="btn-green">📅 Agendar Cita</button>
-      </form>
-    </div>
-
-    <div class="card">
-      <h2>📋 Citas Programadas</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Fecha/Hora</th>
-            <th>Paciente</th>
-            <th>Servicio</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody id="tablaCitas"></tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- TAB 4: VENTAS & CAJA -->
-  <section id="ventas">
-    <div class="card">
-      <h2>💰 Registrar Venta / Cobro</h2>
-      <form onsubmit="event.preventDefault(); guardarVenta();">
-        <div class="grid">
-          <input type="text" id="vConcepto" placeholder="Concepto / Servicio" required>
-          <input type="number" id="vMonto" placeholder="Monto ($)" required>
-        </div>
-        <div class="grid">
-          <select id="vMetodo">
-            <option>Efectivo</option>
-            <option>Nequi</option>
-            <option>DaviPlata</option>
-            <option>Tarjeta</option>
-          </select>
-          <select id="vEstado">
-            <option>Pagado</option>
-            <option>Pendiente</option>
+      <!-- MÓDULO ANTES Y DESPUÉS DE PODOLOGÍA -->
+      <div class="photo-box">
+        <h3 style="font-size: 1rem; color: var(--secondary);">Fotos de Tratamiento (Antes y Después)</h3>
+        
+        <div class="form-group" style="margin-top: 10px;">
+          <label for="photoType">Etiqueta de la Foto:</label>
+          <select id="photoType">
+            <option value="Antes">Antes del Tratamiento</option>
+            <option value="Evolución">Evolución / Proceso</option>
+            <option value="Después">Después del Tratamiento</option>
           </select>
         </div>
-        <button type="submit" class="btn-green">💾 Registrar Cobro</button>
-      </form>
-    </div>
 
-    <div class="card">
-      <h2>📊 Resumen Financiero</h2>
-      <div class="stats">
-        <div class="stat"><strong id="vTotal">$0</strong>Total Vendido</div>
-        <div class="stat"><strong id="vEfectivo">$0</strong>Efectivo</div>
-        <div class="stat"><strong id="vNequi">$0</strong>Nequi/DaviPlata</div>
-        <div class="stat"><strong id="vPendiente" style="color:var(--rojo)">$0</strong>Pendiente</div>
+        <div class="form-group">
+          <label for="photoFile">Cargar o Tomar Foto:</label>
+          <input type="file" id="photoFile" accept="image/*" capture="environment">
+        </div>
+
+        <button type="button" class="btn" onclick="addPodologyImage()">Agregar Foto a Historia</button>
+
+        <!-- Galería de imágenes cargadas -->
+        <div class="photo-grid" id="photoGallery"></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- TAB 5: CONSENTIMIENTO INFORMADO -->
-  <section id="consentimiento">
-    <div class="card">
-      <h2>✍️ Consentimiento Informado Digital</h2>
-      <div class="summary">
-        <p style="font-size:13px; line-height:1.5;">
-          Por medio del presente documento, declaro que acepto recibir el procedimiento podológico asignado en la clínica <strong>Feetsalud</strong>. Confirmo que se me han explicado los riesgos, cuidados post-tratamiento y certifico que mi información médica es verídica.
-        </p>
+    <!-- SECCIÓN: CONSENTIMIENTO INFORMADO -->
+    <section id="consentimiento" class="section-card">
+      <h2>Consentimiento Informado</h2>
+      <p style="font-size:0.85rem; margin-bottom:10px;">Firma de autorización del paciente para procedimientos podológicos.</p>
+      <button class="btn">Generar Consentimiento</button>
+    </section>
+
+    <!-- SECCIÓN: CITAS -->
+    <section id="citas" class="section-card">
+      <h2>Agendamiento de Citas</h2>
+      <div class="form-group">
+        <label>Fecha y Hora:</label>
+        <input type="datetime-local">
       </div>
-      <label>Firma Digital del Paciente (Dibuja abajo):</label>
-      <canvas id="canvasFirma"></canvas>
-      <div style="margin-top:8px;">
-        <button onclick="limpiarFirma()" class="btn-gray">Limpiar Firma</button>
-        <button onclick="guardarConsentimiento()" class="btn-green">💾 Guardar Consentimiento</button>
+      <button class="btn">Enviar Recordatorio WhatsApp</button>
+    </section>
+
+    <!-- SECCIÓN: VENTAS Y CAJA -->
+    <section id="ventas" class="section-card">
+      <h2>Control de Ventas y Caja</h2>
+      <div class="form-group">
+        <label>Servicio o Producto:</label>
+        <input type="text" placeholder="Ej: Quiropodia General / Plantillas">
       </div>
-    </div>
-  </section>
-
-</div>
-
-<script>
-// ESTADO DE LA APLICACIÓN
-let pacientes = JSON.parse(localStorage.getItem("fs_pacientes") || '[{"id":"1","nombre":"María Rodríguez","cedula":"1018239401","telefono":"573001234567","antecedentes":"Diabetes Tipo 2","alergias":"Penicilina"}]');
-let historias = JSON.parse(localStorage.getItem("fs_historias") || '[]');
-let citas = JSON.parse(localStorage.getItem("fs_citas") || '[]');
-let ventas = JSON.parse(localStorage.getItem("fs_ventas") || '[]');
-let pacienteActivoId = "1";
-let dedosSeleccionados = [];
-
-const dinero = val => Number(val || 0).toLocaleString("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 });
-
-function iniciarSesion(){
-  const u = document.getElementById("user").value;
-  const p = document.getElementById("pass").value;
-  if(u === "admin" && p === "1234"){
-    document.getElementById("login").style.display = "none";
-    actualizarSelectorGlobal();
-    renderAll();
-  } else {
-    alert("Usuario o contraseña incorrectos");
-  }
-}
-
-function cerrarSesion(){
-  document.getElementById("login").style.display = "flex";
-}
-
-function verTab(tabId, btn){
-  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
-  document.getElementById(tabId).classList.add("active");
-  btn.classList.add("active");
-  if(tabId === 'consentimiento') initCanvas();
-}
-
-function actualizarSelectorGlobal(){
-  const sel = document.getElementById("selectPacienteGlobal");
-  sel.innerHTML = "";
-  pacientes.forEach(p => {
-    const opt = document.createElement("option");
-    opt.value = p.id;
-    opt.textContent = `${p.nombre} (C.C ${p.cedula})`;
-    if(p.id === pacienteActivoId) opt.selected = true;
-    sel.appendChild(opt);
-  });
-}
-
-function cambiarPacienteGlobal(){
-  pacienteActivoId = document.getElementById("selectPacienteGlobal").value;
-  renderHistorial();
-}
-
-function guardarPaciente(){
-  const nombre = document.getElementById("pNombre").value;
-  const cedula = document.getElementById("pCedula").value;
-  const telefono = document.getElementById("pTelefono").value;
-  const antecedentes = document.getElementById("pAntecedentes").value;
-  const alergias = document.getElementById("pAlergias").value;
-
-  const nuevo = { id: Date.now().toString(), nombre, cedula, telefono, antecedentes, alergias };
-  pacientes.push(nuevo);
-  localStorage.setItem("fs_pacientes", JSON.stringify(pacientes));
-  pacienteActivoId = nuevo.id;
-  
-  actualizarSelectorGlobal();
-  renderPacientes();
-  alert("Paciente registrado con éxito.");
-}
-
-function renderPacientes(){
-  const t = document.getElementById("tablaPacientes");
-  t.innerHTML = "";
-  pacientes.forEach(p => {
-    t.innerHTML += `<tr><td><strong>${p.nombre}</strong></td><td>${p.cedula}</td><td>${p.telefono}</td><td>${p.antecedentes || 'Ninguno'}</td></tr>`;
-  });
-}
-
-function toggleToe(el, pie, dedo){
-  const tag = `${pie}-${dedo}`;
-  if(dedosSeleccionados.includes(tag)){
-    dedosSeleccionados = dedosSeleccionados.filter(d => d !== tag);
-    el.classList.remove("selected");
-  } else {
-    dedosSeleccionados.push(tag);
-    el.classList.add("selected");
-  }
-}
-
-function guardarHistoria(){
-  const motivo = document.getElementById("hMotivo").value;
-  const notas = document.getElementById("hNotas").value;
-  if(!motivo) return alert("Escribe el motivo de consulta.");
-
-  historias.push({
-    id: Date.now(),
-    pacienteId: pacienteActivoId,
-    fecha: new Date().toLocaleDateString("es-CO"),
-    motivo,
-    dedos: [...dedosSeleccionados],
-    notas
-  });
-
-  localStorage.setItem("fs_historias", JSON.stringify(historias));
-  document.getElementById("hMotivo").value = "";
-  document.getElementById("hNotas").value = "";
-  dedosSeleccionados = [];
-  document.querySelectorAll(".toe").forEach(t => t.classList.remove("selected"));
-  renderHistorial();
-  alert("Evolución guardada.");
-}
-
-function renderHistorial(){
-  const div = document.getElementById("listaHistorial");
-  div.innerHTML = "";
-  const lista = historias.filter(h => h.pacienteId === pacienteActivoId);
-  if(!lista.length) { div.innerHTML = "<p class='muted'>No hay evoluciones clínicas registradas para este paciente.</p>"; return; }
-  
-  lista.forEach(h => {
-    div.innerHTML += `
-      <div class="record">
-        <strong>${h.fecha} - ${h.motivo}</strong>
-        <p style="margin:5px 0; font-size:13px;"><strong>Dedos/Zonas:</strong> ${h.dedos.join(", ") || 'General'}</p>
-        <p style="margin:0; font-size:13px; color:#455a64;">${h.notas}</p>
+      <div class="form-group">
+        <label>Monto ($):</label>
+        <input type="number" placeholder="0.00">
       </div>
-    `;
-  });
-}
+      <button class="btn">Registrar Ingreso</button>
+    </section>
 
-function guardarCita(){
-  const fecha = document.getElementById("cFecha").value;
-  const hora = document.getElementById("cHora").value;
-  const servicio = document.getElementById("cServicio").value;
-  citas.push({ id: Date.now(), pacienteId: pacienteActivoId, fecha, hora, servicio });
-  localStorage.setItem("fs_citas", JSON.stringify(citas));
-  renderCitas();
-  alert("Cita agendada.");
-}
+    <!-- SECCIÓN: RESPALDO DE DATOS -->
+    <section id="respaldo" class="section-card">
+      <h2>Respaldo de Datos</h2>
+      <p style="font-size:0.85rem; margin-bottom:10px;">Exporta tus registros locales a formato JSON.</p>
+      <button class="btn">Descargar Copia de Seguridad</button>
+    </section>
 
-function renderCitas(){
-  const t = document.getElementById("tablaCitas");
-  t.innerHTML = "";
-  citas.forEach(c => {
-    const p = pacientes.find(pac => pac.id === c.pacienteId);
-    t.innerHTML += `
-      <tr>
-        <td>${c.fecha} ${c.hora}</td>
-        <td>${p ? p.nombre : 'Desconocido'}</td>
-        <td>${c.servicio}</td>
-        <td><button onclick="enviarWA('${p?.telefono}', '${p?.nombre}', '${c.fecha}', '${c.hora}', '${c.servicio}')" class="btn-wa">WhatsApp</button></td>
-      </tr>
-    `;
-  });
-}
+  </main>
 
-function enviarWA(tel, nom, fecha, hora, serv){
-  if(!tel) return alert("El paciente no tiene teléfono registrado.");
-  const msg = `Hola ${nom}, te recordamos tu cita en Feetsalud el ${fecha} a las ${hora} para ${serv}. Por favor confirmar asistencia.`;
-  window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`, '_blank');
-}
+  <script>
+    // Alternar menú desplegable superior
+    function toggleMenu() {
+      const menu = document.getElementById('navMenu');
+      menu.classList.toggle('active');
+    }
 
-function guardarVenta(){
-  const concepto = document.getElementById("vConcepto").value;
-  const monto = Number(document.getElementById("vMonto").value);
-  const metodo = document.getElementById("vMetodo").value;
-  const estado = document.getElementById("vEstado").value;
+    // Cambiar de sección activa y cerrar el menú
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll('.section-card');
+      sections.forEach(sec => sec.classList.remove('active'));
 
-  ventas.push({ id: Date.now(), pacienteId: pacienteActivoId, concepto, monto, metodo, estado });
-  localStorage.setItem("fs_ventas", JSON.stringify(ventas));
-  renderVentas();
-  alert("Venta registrada.");
-}
+      const target = document.getElementById(sectionId);
+      if (target) {
+        target.classList.add('active');
+      }
 
-function renderVentas(){
-  let tot = 0, ef = 0, neq = 0, pen = 0;
-  ventas.forEach(v => {
-    tot += v.monto;
-    if(v.estado === "Pendiente") pen += v.monto;
-    else if(v.metodo === "Efectivo") ef += v.monto;
-    else neq += v.monto;
-  });
-  document.getElementById("vTotal").textContent = dinero(tot);
-  document.getElementById("vEfectivo").textContent = dinero(ef);
-  document.getElementById("vNequi").textContent = dinero(neq);
-  document.getElementById("vPendiente").textContent = dinero(pen);
-}
+      // Ocultar menú tras hacer clic
+      document.getElementById('navMenu').classList.remove('active');
+    }
 
-// CANVAS FIRMA
-let canvas, ctx, dibujando = false;
-function initCanvas(){
-  canvas = document.getElementById("canvasFirma");
-  if(!canvas) return;
-  ctx = canvas.getContext("2d");
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = "#086871";
+    // Cargar y mostrar fotos del tratamiento en la historia clínica
+    function addPodologyImage() {
+      const fileInput = document.getElementById('photoFile');
+      const typeSelect = document.getElementById('photoType');
+      const gallery = document.getElementById('photoGallery');
 
-  canvas.onmousedown = e => { dibujando = true; ctx.beginPath(); ctx.moveTo(e.offsetX, e.offsetY); };
-  canvas.onmousemove = e => { if(dibujando){ ctx.lineTo(e.offsetX, e.offsetY); ctx.stroke(); } };
-  canvas.onmouseup = () => dibujando = false;
-}
+      if (!fileInput.files || !fileInput.files[0]) {
+        alert('Por favor selecciona una imagen primero.');
+        return;
+      }
 
-function limpiarFirma(){
-  if(ctx) ctx.clearRect(0,0,canvas.width,canvas.height);
-}
+      const file = fileInput.files[0];
+      const reader = new FileReader();
 
-function guardarConsentimiento(){
-  alert("Consentimiento firmado y guardado digitalmente para el paciente activo.");
-}
+      reader.onload = function (e) {
+        const imageSrc = e.target.result;
+        const typeValue = typeSelect.value;
+        const currentDate = new Date().toLocaleDateString();
 
-function renderAll(){
-  renderPacientes();
-  renderHistorial();
-  renderCitas();
-  renderVentas();
-}
+        let tagClass = 'tag-evolucion';
+        if (typeValue === 'Antes') tagClass = 'tag-antes';
+        if (typeValue === 'Después') tagClass = 'tag-despues';
 
-window.onload = () => {
-  actualizarSelectorGlobal();
-  renderAll();
-};
-</script>
+        const item = document.createElement('div');
+        item.className = 'photo-item';
 
+        item.innerHTML = `
+          <img src="${imageSrc}" alt="Foto Podológica">
+          <div class="photo-tag ${tagClass}">${typeValue}</div>
+          <div class="photo-date">${currentDate}</div>
+        `;
+
+        gallery.appendChild(item);
+        fileInput.value = '';
+      };
+
+      reader.readAsDataURL(file);
+    }
+  </script>
 </body>
 </html>
 
